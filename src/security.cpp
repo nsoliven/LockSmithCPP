@@ -5,10 +5,11 @@ Learn more @ https://github.com/nsoliven/passmanager
 Created in 2023 by NSOLIVEN
 
 */
+
 #include "security.h"
 //work in progress
 
-string UserAuthentication :: GenerateKey(){
+string UserAuthentication :: GenerateKey(int length){
     string key = "";
     const string charset = 
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

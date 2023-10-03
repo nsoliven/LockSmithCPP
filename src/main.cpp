@@ -6,14 +6,10 @@ Created in 2023 by NSOLIVEN
 
 */
 
-#include <iostream>
-#include <sqlite3.h>
-#include <string>
-#include <vector>
-#include <iomanip>
-#include <random>
 
+#include "userInterface.h"
 #include "security.h"
+#include "encryptionAlgorithm.h"
 
 using namespace std;
 

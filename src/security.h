@@ -9,6 +9,7 @@ Created in 2023 by NSOLIVEN
 #define SECURITY_H
 
 #include <string>
+#include <random>
 #include <iostream>
 
 using namespace std;
