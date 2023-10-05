@@ -1,6 +1,9 @@
 # C++ Based Password Manager (work in progress)
 🔐 A minimalistic password manager application built with C++ and SQL for learning purposes.
 
+## User Installation
+//dependencies will include OpenSSL for AES encrpytion 
+
 ## User Flow
 
 1. **Encryption and Data Storage:**
