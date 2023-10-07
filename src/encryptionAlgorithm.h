@@ -5,6 +5,7 @@ Learn more @ https://github.com/nsoliven/passmanager
 Created in 2023 by NSOLIVEN
 
 */
+//date oct6
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
