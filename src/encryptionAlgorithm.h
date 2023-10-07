@@ -19,8 +19,8 @@ using namespace std;
 class Encryption {
 public:
     //
-    string aes_encrypt();
-    string aes_decrypt();
+    string aes_encrypt(string key, string password);
+    string aes_decrypt(string key, string password);
 };
 
 #endif
