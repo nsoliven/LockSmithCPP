@@ -16,6 +16,13 @@ using namespace std;
 class UserInterface{
 public:
     void openMainMenu();
+    void openLoginMenu();
+    void openNewInstanceMenu();
+    void openMyPasswordsMenu();
+    void openAddPasswordMenu();
+    void openRemovePasswordMenu();
+    void openEditPasswordMenu();
 };
+
 
 #endif
