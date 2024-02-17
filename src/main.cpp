@@ -9,6 +9,9 @@ Created in 2023 by NSOLIVEN
 
 #include "userInterface.h"
 #include "encryptionAlgorithm.h"
+#include "passwordmanagement.h"
+
+
 
 using namespace std;
 
@@ -19,6 +22,9 @@ int main(){
     // show the main menu
     UserInterface ui;
     ui.openMainMenu();
+    string password;
+    cin >> password;
+
 
     
 
