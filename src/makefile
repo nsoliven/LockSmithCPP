@@ -17,13 +17,13 @@ SOURCES=main.cpp passwordmanagement.cpp userInterface.cpp encryptionAlgorithm.cp
 OBJECTS=$(SOURCES:.cpp=.o)
 
 # Output binary
-EXECUTABLE=passmanager
+EXECUTABLE=lockSmith.out
 
 # Default target
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
 # Rule for object files, how to make an .o from a .cpp
 %.o: %.cpp
@@ -31,7 +31,7 @@ $(EXECUTABLE): $(OBJECTS)
 
 # Clean target to remove build artifacts
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f $(OBJECTS)
 
 # Dependency rules for objects
 main.o: main.cpp passwordmanagement.h userInterface.h

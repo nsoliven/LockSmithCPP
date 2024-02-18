@@ -59,6 +59,8 @@ void UserInterface::openMainMenu(){
             break;
         case 3:
             // exit the program
+            cout << endl << "Exiting the program" << endl;
+            exit(0);
             break;
         default:
             cout << "Invalid choice" << endl;

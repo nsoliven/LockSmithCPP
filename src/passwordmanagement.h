@@ -24,11 +24,12 @@ using namespace std;
 class Database{
 public:
     // define the database functions
-    void declareDatabase();
-    void openDatabase();
-    void closeDatabase();
-    void createTable();
-    void createDatabase();
+    bool declareDatabase(const char *filename);
+    void openDatabase(const char *filename);
+    void closeDatabase(const char *filename);
+    void createTable(const char *filename);
+    void createDatabase(const char *filename);
+    bool checkIfDatabaseExists(const char *filename, sqlite3 *db);
     void insertData(string password, string username, string website, string key);
     void removeData(string password, string username, string website, string key);
     void editData(string password, string username, string website, string key);

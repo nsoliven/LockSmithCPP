@@ -17,9 +17,15 @@ using namespace std;
 
 const int keyLength = 16;
 
-
 int main(){
     // show the main menu
+
+    Database passDB;
+
+    passDB.declareDatabase("passwords.db");
+
+    
+
     UserInterface ui;
     ui.openMainMenu();
     string password;

@@ -11,22 +11,35 @@ Created in 2023 by NSOLIVEN
 // and retrieving passwords
 
 #include <passwordmanagement.h>
-void Database::declareDatabase(){
+#include <sqlite3.h>
+
+
+bool checkIfDatabaseExists(const char *filename , sqlite3 *db){
+    // check if the database exists
+    if (sqlite3_open(filename, &db) == SQLITE_OK){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool Database::declareDatabase(const char *filename){
     // declare the database
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    sqlite3_open("passwords.db", &db);  //declare the database
+    int rc = sqlite3_open(filename, &db);
 
-
-
-
-}
-
-void Database::openDatabase(){
-    // open the database
-}
-void Database::closeDatabase(){
-    // close the database
+    if (rc){
+        cout << "Error opening database: " << sqlite3_errmsg(db) << endl;
+        sqlite3_close(db);
+        return false;
+    }
+    else{
+        cout << "Database opened successfully" << endl;
+        sqlite3_close(db);
+        return true;
+    }
 }
 
 
