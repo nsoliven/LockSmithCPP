@@ -18,6 +18,7 @@ Created in 2023 by NSOLIVEN
 #include <openssl/err.h> // For OpenSSL error handling functions
 
 
+
 using namespace std;
 
 class Encryption {
