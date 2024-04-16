@@ -43,6 +43,6 @@
 
 ## Dependencies:
 
-** 'OpenSSL (3.1.3)'**
+**'OpenSSL (3.1.3)'**
 - OpenSSL is used in this project to provide cryptographic functions. 
 - Website: [https://www.openssl.org](https://www.openssl.org/)
