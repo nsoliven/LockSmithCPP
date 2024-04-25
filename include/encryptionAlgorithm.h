@@ -11,14 +11,13 @@ Created in 2023 by NSOLIVEN
 #include <string>
 #include <iostream>
 
-#include <openssl/aes.h> // For OpenSSL AES encryption functions
-#include <openssl/rand.h> // For OpenSSL random number generation functions
-#include <openssl/evp.h> // For OpenSSL EVP encryption functions
-#include <openssl/bio.h> // For OpenSSL BIO buffer I/O functions
-#include <openssl/err.h> // For OpenSSL error handling functions
 
 
+/*
 
+Complete WIP!
+
+*/
 using namespace std;
 
 class Encryption {

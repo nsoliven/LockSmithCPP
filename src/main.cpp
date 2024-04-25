@@ -37,9 +37,6 @@ const int keyLength = 16;
 int main(){
     // show the main menu
 
-    Database passDB;
-
-    passDB.declareDatabase("passwords.db");
 
     
 
@@ -48,8 +45,6 @@ int main(){
     string password;
     cin >> password;
 
-
-    
 
     
 

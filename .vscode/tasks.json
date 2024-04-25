@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "make && make clean",
             "options": {
-                "cwd": "${workspaceFolder}/src"
+                "cwd": "${workspaceFolder}/build"
             },
             "group": {
                 "kind": "build",

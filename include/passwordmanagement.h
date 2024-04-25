@@ -6,16 +6,17 @@ Created in 2023 by NSOLIVEN
 
 */
 
-#include <sqlite3.h>
-#include <string>
-#include <iostream>
-
-using namespace std;
 
 
 #ifndef PASSWORDMANAGEMENT_H
 #define PASSWORDMANAGEMENT_H
 
+
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 // will be used to edit the database of passwords for storing
 // and retrieving passwords using sqlite3
