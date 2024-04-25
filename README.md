@@ -1,4 +1,4 @@
-# C++ Based Password Manager (work in progress)
+# LOCKSMITH - A C++ Based Password Manager (work in progress)
 🔐 A minimalistic password manager application built with C++ and SQL for learning purposes.
 
 ## User Installation
