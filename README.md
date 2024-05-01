@@ -1,8 +1,14 @@
 # LOCKSMITH - A C++ Based Password Manager (work in progress)
 🔐 A minimalistic password manager application built with C++ and SQL for learning purposes.
 
+## IMPORTANT NOTES:
+1. **DATA IS NOT SECURE YET**
+   - Data in the password manager is currently NOT hashed in any way. 
+   - Will be stored secrurely in the future, development on database is first
+
 ## User Installation
-//dependencies will include OpenSSL for AES encrpytion 
+
+- Dependencies already included. Download is in the versions.
 
 ## User Flow
 

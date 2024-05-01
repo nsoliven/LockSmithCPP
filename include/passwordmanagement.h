@@ -15,8 +15,8 @@ Created in 2023 by NSOLIVEN
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
 #include <iostream>
+#include <termios.h>
 
-using namespace std;
 
 // will be used to edit the database of passwords for storing
 // and retrieving passwords using sqlite3
@@ -25,26 +25,22 @@ using namespace std;
 class Database{
 public:
     // define the database functions
-    bool declareDatabase(const char *filename);
-    void openDatabase(const char *filename);
-    void closeDatabase(const char *filename);
-    void createTable(const char *filename);
-    void createDatabase(const char *filename);
-    bool checkIfDatabaseExists(const char *filename, sqlite3 *db);
-    void insertData(string password, string username, string website, string key);
-    void removeData(string password, string username, string website, string key);
-    void editData(string password, string username, string website, string key);
-    void retrieveData(string password, string username, string website, string key);
+    // declare database
+    bool declareDatabase(const std::string &filename);
+    bool checkIfDatabaseExists(const std::string &filename);
 };
 
 
-class PasswordManagement{
+class SystemPasswordManagement{
 public:
-    void addPassword(string password, string username, string website, string key);
-    void removePassword(string password, string username, string website, string key);
-    void editPassword(string password, string username, string website, string key);
-    void getPassword(string password, string username, string website, string key);
+
+    std::string getPasswordFromUser();
 };
 
+class UserDatabasePasswordManager{
+    void addPassword(std::string password, std::string username, std::string website, std::string key);
+    void removePassword(std::string password, std::string username, std::string website, std::string key);
+    void editPassword(std::string password, std::string username, std::string website, std::string key);
+};
 
 #endif

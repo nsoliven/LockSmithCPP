@@ -36,18 +36,10 @@ const int keyLength = 16;
 
 int main(){
     // show the main menu
-
-
-    
-
     UserInterface ui;
     ui.openMainMenu();
-    string password;
-    cin >> password;
 
-
-    
-
+    // getting the password securely
 
     return 0;
 }

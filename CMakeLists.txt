@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.22.1)
 
-project(LockSmith VERSION 0.01)
+project(LockSmith VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
