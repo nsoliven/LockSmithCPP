@@ -4,7 +4,7 @@
 ## IMPORTANT NOTES:
 1. **DATA IS NOT SECURE YET**
    - Data in the password manager is currently NOT hashed in any way. 
-   - Will be stored secrurely in the future, development on database is first
+   - Will be stored secrurely in the future, development on database is the priority.
 
 ## User Installation
 
