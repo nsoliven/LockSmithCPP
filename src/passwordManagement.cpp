@@ -32,7 +32,66 @@ Created in 2023 by NSOLIVEN
         }
     }
 
-    std::string SystemPasswordManagement::getPasswordFromUser(){
+
+    /**
+     * @brief Used for grabbing password from user from console input
+     *        Console input is hidden to prevent visual stealing of password with bool
+     * 
+     *        Password not hashed here yet, it is stored in plain text and is vulnerable in memory.
+     *
+     * @param type Type of password we are getting,
+     *        0 = (default) get password for regular storing
+     *        1 = get master password
+     * @param hidden bool if to hide data or not
+     * @return string of password grabbed
+     */
+
+    std::string SystemPasswordManagement::getPasswordFromUser(int type=1, bool hidden = true){
+        if(type==1&&hidden){
+            std::cout << "Enter your master password, [Input is hidden]: \n";
+        }
+        if(type==0&&hidden){
+            std::cout << "Enter your wanted password, [Input is hidden]: \n";
+        }
+        if(type==1&&!hidden){
+            std::cout << "Enter your master password, [Input is NOT HIDDEN]: \n";
+        }
+        if(type==0&&!hidden){
+            std::cout << "Enter your wanted password, [Input is NOT HIDDEN]: \n";
+        }
+
+        if (hidden) {
+            #ifdef _WIN32
+            HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
+            DWORD mode = 0;
+            GetConsoleMode(hStdin, &mode);
+            SetConsoleMode(hStdin, mode & (~(ENABLE_ECHO_INPUT)));
+            #else
+            struct termios oldt, newt;
+            tcgetattr(STDIN_FILENO, &oldt);
+            newt = oldt;
+            newt.c_lflag &= ~(ECHO);
+            tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+            #endif
+        }
+
         std::string password;
-        std::cin >> password;
+        std::getline(std::cin, password);
+
+        if (hidden) {
+            #ifdef _WIN32
+            HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
+            DWORD mode = 0;
+            GetConsoleMode(hStdin, &mode);
+            SetConsoleMode(hStdin, mode | ENABLE_ECHO_INPUT);
+            #else
+            struct termios oldt;
+            tcgetattr(STDIN_FILENO, &oldt);
+            oldt.c_lflag |= ECHO;
+            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+            #endif
+            std::cout << std::endl;
+        }
+
+        return password;
     }

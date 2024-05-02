@@ -15,8 +15,13 @@ Created in 2023 by NSOLIVEN
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
 #include <iostream>
-#include <termios.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <termios.h>
+#include <unistd.h>
+#endif
 
 // will be used to edit the database of passwords for storing
 // and retrieving passwords using sqlite3
@@ -33,11 +38,11 @@ public:
 
 class SystemPasswordManagement{
 public:
-
-    std::string getPasswordFromUser();
+    std::string getPasswordFromUser(int type,bool hidden);
 };
 
 class UserDatabasePasswordManager{
+public:
     void addPassword(std::string password, std::string username, std::string website, std::string key);
     void removePassword(std::string password, std::string username, std::string website, std::string key);
     void editPassword(std::string password, std::string username, std::string website, std::string key);

@@ -36,10 +36,12 @@ const int keyLength = 16;
 
 int main(){
     // show the main menu
-    UserInterface ui;
-    ui.openMainMenu();
+    //UserInterface ui;
+    //ui.openMainMenu();
 
     // getting the password securely
+    SystemPasswordManagement systemPass;
+    std::string password = systemPass.getPasswordFromUser(1, true);
 
     return 0;
 }
