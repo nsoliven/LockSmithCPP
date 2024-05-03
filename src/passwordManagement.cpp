@@ -14,12 +14,8 @@ Created in 2023 by NSOLIVEN
 
 // Define the password management functions
    bool Database::checkIfDatabaseExists(const std::string &filename){
-    try{
-        SQLite::Database db(filename, SQLite::OPEN_CREATE);
-        return true;
-    }catch(SQLite::Exception& e){
-            return false;
-        }
+        std::ifstream file(filename);
+        return file.good();
     }
     
 
@@ -30,6 +26,7 @@ Created in 2023 by NSOLIVEN
         }catch(SQLite::Exception& e){
             return false;
         }
+        return true;
     }
 
 
@@ -48,16 +45,16 @@ Created in 2023 by NSOLIVEN
 
     std::string SystemPasswordManagement::getPasswordFromUser(int type=1, bool hidden = true){
         if(type==1&&hidden){
-            std::cout << "Enter your master password, [Input is hidden]: \n";
+            std::cout << "Enter your master password, [Input is hidden]: ";
         }
         if(type==0&&hidden){
-            std::cout << "Enter your wanted password, [Input is hidden]: \n";
+            std::cout << "Enter your wanted password, [Input is hidden]: ";
         }
         if(type==1&&!hidden){
-            std::cout << "Enter your master password, [Input is NOT HIDDEN]: \n";
+            std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";
         }
         if(type==0&&!hidden){
-            std::cout << "Enter your wanted password, [Input is NOT HIDDEN]: \n";
+            std::cout << "Enter your wanted password, [Input is NOT HIDDEN]: ";
         }
 
         if (hidden) {
@@ -75,9 +72,9 @@ Created in 2023 by NSOLIVEN
             #endif
         }
 
-        std::string password;
+        std::string password = "";
         std::getline(std::cin, password);
-
+        std::cout << std::endl;
         if (hidden) {
             #ifdef _WIN32
             HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
@@ -94,4 +91,29 @@ Created in 2023 by NSOLIVEN
         }
 
         return password;
+    }
+
+
+
+    /**
+     * @brief Used for if user decides to setup a new system, we will store the password securely.
+     *
+     * @param type T
+     * @param 
+     * @return If successfully setup the masterPassword for a new database.
+     */
+
+    bool SystemPasswordManagement::masterPasswordSetup(){
+
+        std::ofstream outFile("master_password");
+        if (!outFile) {
+            std::cerr << "Error: Unable to open file for writing.\n";
+            return false;
+        }
+
+        std::string password = "exmaple password"; // example password
+        password = getPasswordFromUser();
+        outFile << password << std::endl;
+
+        return true;
     }

@@ -15,6 +15,7 @@ Created in 2023 by NSOLIVEN
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -37,7 +38,10 @@ public:
 
 
 class SystemPasswordManagement{
+private:
+    std::string hashedPassword;
 public:
+    bool masterPasswordSetup();
     std::string getPasswordFromUser(int type,bool hidden);
 };
 

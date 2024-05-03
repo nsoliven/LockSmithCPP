@@ -28,20 +28,25 @@ Created in 2023 by NSOLIVEN
 #include "encryptionAlgorithm.h"
 #include "passwordmanagement.h"
 
-
-
-using namespace std;
-
+const string dbName = "locksmithDB.sqlite3";
 const int keyLength = 16;
 
 int main(){
-    // show the main menu
-    //UserInterface ui;
-    //ui.openMainMenu();
-
-    // getting the password securely
+    //create our objects for use of functions
     SystemPasswordManagement systemPass;
-    std::string password = systemPass.getPasswordFromUser(1, true);
+    UserInterface ui;
+    Database dbManager;
+
+    //check if we setup new
+    if(dbManager.checkIfDatabaseExists(dbName)){
+        ui.openNewInstanceMenu();
+        systemPass.masterPasswordSetup();
+    }
+
+
+    // show the main menu
+    ui.openMainMenu();
+    // getting the password securely
 
     return 0;
 }

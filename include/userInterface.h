@@ -11,7 +11,6 @@ Created in 2023 by NxSOLIVEN
 #include <string>
 #include <iostream>
 
-using namespace std;
 
 class UserInterface{
 public:

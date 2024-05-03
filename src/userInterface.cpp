@@ -27,29 +27,27 @@ list to do:
 // define the main menu
 
 void UserInterface::openNewInstanceMenu(){
-    cout << "Welcome to LockSmith C++ by NSOLIVEN" << endl;
-    cout << "--------------------------" << endl;
-    cout << "We have detected that this is your first time using LockSmith C++" << endl;
-    cout << "Please create a new password to secure your passwords" << endl << endl;
-    cout << "Enter your new password: "; 
+    std::cout << "Welcome to LockSmith C++ by NSOLIVEN" << std::endl;
+    std::cout << "--------------------------" << std::endl;
+    std::cout << "We have detected that this is your first time using LockSmith C++" << std::endl;
+    std::cout << "Please create a new password to secure your passwords" << std::endl << std::endl;
 }
 
 void UserInterface::openLoginMenu(){
-    cout << "Welcome to LockSmith C++" << endl;
-
-    //check if the password is correct
-    
-
+    std::cout << "Welcome to LockSmith C++" << std::endl;
+    std::cout << "1. Add a new password" << std::endl;
+    std::cout << "2. View all passwords" << std::endl;
+    std::cout << "3. Exit" << std::endl;
+    std::cout << "Enter your choice: ";
 }
-
 void UserInterface::openMainMenu(){
-    cout << "Welcome to the Password Manager" << endl;
-    cout << "1. Add a new password" << endl;
-    cout << "2. View all passwords" << endl;
-    cout << "3. Exit" << endl;
-    cout << "Enter your choice: ";
+    std::cout << "Welcome to the Password Manager" << std::endl;
+    std::cout << "1. Add a new password" << std::endl;
+    std::cout << "2. View all passwords" << std::endl;
+    std::cout << "3. Exit" << std::endl;
+    std::cout << "Enter your choice: ";
     int choice;
-    cin >> choice;
+    std::cin >> choice;
     switch(choice){
         case 1:
             // add a new password
@@ -59,11 +57,11 @@ void UserInterface::openMainMenu(){
             break;
         case 3:
             // exit the program
-            cout << endl << "Exiting the program" << endl;
+            std::cout << std::endl << "Exiting the program" << std::endl;
             exit(0);
             break;
         default:
-            cout << "Invalid choice" << endl;
+            std::cout << "Invalid choice" << std::endl;
             break;
     }
 }
