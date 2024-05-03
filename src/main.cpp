@@ -24,12 +24,17 @@ Created in 2023 by NSOLIVEN
 */
 
 
+
+
+
 #include "userInterface.h"
 #include "encryptionAlgorithm.h"
 #include "passwordmanagement.h"
 
-const string dbName = "locksmithDB.sqlite3";
+const string dbName = "lockSmithDB.db3";
+const string masterFile = "master_password";
 const int keyLength = 16;
+const unsigned int maxLoginAttempts = 5;
 
 int main(){
     //create our objects for use of functions
@@ -37,16 +42,30 @@ int main(){
     UserInterface ui;
     Database dbManager;
 
-    //check if we setup new
-    if(dbManager.checkIfDatabaseExists(dbName)){
+    //check if we are setting up a new database
+    if(!dbManager.checkIfDatabaseExists(dbName)){
         ui.openNewInstanceMenu();
-        systemPass.masterPasswordSetup();
+        if(!systemPass.masterPasswordSetup(masterFile)){
+            std::cout<< "PASSWORD SETUP FAILED! DO YOU HAVE READ/WRITE PERMISSIONS?\n";
+            return -1;
+        }
+
+        if(!dbManager.declareDatabase(dbName)){
+            std::cout<< "DATABASE SETUP FAILED! DO YOU HAVE READ/WRITE PERMISSIONS?\n";
+            return -1;
+        }
+        cout << "New Database has been created!\n";
+    }else{ui.openLoginMenu();}
+
+    //logging in 
+    for(int i = 0; i <= maxLoginAttempts; i++){
+        if(systemPass.masterPasswordLogin(masterFile)){break;}
+        std::cout<< "Wrong Password! Attempts Left = [" <<
+        (maxLoginAttempts-i) << " of " << maxLoginAttempts << "]\n";
+
+        if(i==maxLoginAttempts){cout<< "MAX ATTEMPTS REACHED, EXITING PROGRAM\n"; return 1;}
     }
 
-
-    // show the main menu
-    ui.openMainMenu();
-    // getting the password securely
 
     return 0;
 }

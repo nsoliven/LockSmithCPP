@@ -28,6 +28,13 @@ Created in 2023 by NSOLIVEN
 // and retrieving passwords using sqlite3
 
 // creates a new database class for the actual management of the database
+class User{
+private:
+    std::string hashedPassword;
+
+public:
+};
+
 class Database{
 public:
     // define the database functions
@@ -39,9 +46,9 @@ public:
 
 class SystemPasswordManagement{
 private:
-    std::string hashedPassword;
 public:
-    bool masterPasswordSetup();
+    bool masterPasswordSetup(const std::string& masterpasslocation);
+    bool masterPasswordLogin(const std::string& masterpasslocation);
     std::string getPasswordFromUser(int type,bool hidden);
 };
 

@@ -21,9 +21,16 @@ Created in 2023 by NSOLIVEN
 
     bool Database::declareDatabase(const std::string &filename){
         try{
-            SQLite::Database passdb(filename, SQLite::OPEN_READWRITE);
-            passdb.exec("CREATE TABLE COMPANY(ID INT PRIMARY KEY, NAME TEXT, AGE INT)");
+            SQLite::Database passdb(filename, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+            passdb.exec("CREATE TABLE locksmithData ( \
+                            password_name VARCHAR(255) PRIMARY KEY, \
+                            email_username TEXT NOT NULL, \
+                            password TEXT NOT NULL, \
+                            date_added DATETIME DEFAULT CURRENT_TIMESTAMP \
+                        );"
+                    );
         }catch(SQLite::Exception& e){
+            std::cerr << "SQLite error: " << e.getErrorStr() << std::endl; // More detailed error message
             return false;
         }
         return true;
@@ -97,15 +104,13 @@ Created in 2023 by NSOLIVEN
 
     /**
      * @brief Used for if user decides to setup a new system, we will store the password securely.
-     *
-     * @param type T
-     * @param 
-     * @return If successfully setup the masterPassword for a new database.
+     *  
+     * @return Bool if setup successful!
      */
 
-    bool SystemPasswordManagement::masterPasswordSetup(){
+    bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpasslocation){
 
-        std::ofstream outFile("master_password");
+        std::ofstream outFile(masterpasslocation);
         if (!outFile) {
             std::cerr << "Error: Unable to open file for writing.\n";
             return false;
@@ -116,4 +121,26 @@ Created in 2023 by NSOLIVEN
         outFile << password << std::endl;
 
         return true;
+    }
+
+    /**
+     * @brief PasswordManagerPrompts a login
+     *  
+     * @return Bool if success
+     */
+    bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpasslocation){
+        //grab password from file
+        std::ifstream inFile(masterpasslocation);
+        if (!inFile) {
+            std::cerr << "Error: Unable to open file for writing.\n";
+            return false;
+        }
+        std::string masterPass;
+        getline(inFile, masterPass);
+
+
+        std::string userInput = getPasswordFromUser();
+
+        if(masterPass==userInput){return true;}
+        return false;
     }
