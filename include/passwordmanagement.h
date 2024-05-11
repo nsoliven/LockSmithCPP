@@ -31,16 +31,20 @@ Created in 2023 by NSOLIVEN
 class User{
 private:
     std::string hashedPassword;
-
 public:
 };
 
 class Database{
+private:
+    std::string dbFileName;
+    bool newInstance;
 public:
     // define the database functions
     // declare database
-    bool declareDatabase(const std::string &filename);
-    bool checkIfDatabaseExists(const std::string &filename);
+    Database(const std::string &dbFileName);
+    bool declareDatabase();
+    bool checkIfDatabaseExists();
+    bool getIfNewInstance();
 };
 
 

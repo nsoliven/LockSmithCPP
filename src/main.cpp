@@ -40,21 +40,12 @@ int main(){
     //create our objects for use of functions
     SystemPasswordManagement systemPass;
     UserInterface ui;
-    Database dbManager;
+    Database dbManager(dbName);
 
-    //check if we are setting up a new database
-    if(!dbManager.checkIfDatabaseExists(dbName)){
+    //check if we are setting up database and masterpassword
+    if(dbManager.getIfNewInstance()){
         ui.openNewInstanceMenu();
-        if(!systemPass.masterPasswordSetup(masterFile)){
-            std::cout<< "PASSWORD SETUP FAILED! DO YOU HAVE READ/WRITE PERMISSIONS?\n";
-            return -1;
-        }
-
-        if(!dbManager.declareDatabase(dbName)){
-            std::cout<< "DATABASE SETUP FAILED! DO YOU HAVE READ/WRITE PERMISSIONS?\n";
-            return -1;
-        }
-        cout << "New Database has been created!\n";
+        systemPass.masterPasswordSetup(masterFile);
     }else{ui.openLoginMenu();}
 
     //logging in 
@@ -65,6 +56,9 @@ int main(){
 
         if(i==maxLoginAttempts){cout<< "MAX ATTEMPTS REACHED, EXITING PROGRAM\n"; return 1;}
     }
+
+    //now logged in 
+
 
 
     return 0;

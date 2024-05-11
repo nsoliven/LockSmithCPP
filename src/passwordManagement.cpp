@@ -13,15 +13,23 @@ Created in 2023 by NSOLIVEN
 #include <passwordmanagement.h>
 
 // Define the password management functions
-   bool Database::checkIfDatabaseExists(const std::string &filename){
-        std::ifstream file(filename);
+    Database::Database(const std::string &dbFileName){
+        this->dbFileName = dbFileName;
+        this->newInstance = !checkIfDatabaseExists();
+        if(this->newInstance){
+            declareDatabase();
+        }
+    }
+
+   bool Database::checkIfDatabaseExists(){
+        std::ifstream file(this->dbFileName);
         return file.good();
     }
     
 
-    bool Database::declareDatabase(const std::string &filename){
+    bool Database::declareDatabase(){
         try{
-            SQLite::Database passdb(filename, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+            SQLite::Database passdb(this->dbFileName, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
             passdb.exec("CREATE TABLE locksmithData ( \
                             password_name VARCHAR(255) PRIMARY KEY, \
                             email_username TEXT NOT NULL, \
@@ -36,6 +44,9 @@ Created in 2023 by NSOLIVEN
         return true;
     }
 
+    bool Database::getIfNewInstance(){
+        return this->newInstance;
+    }
 
     /**
      * @brief Used for grabbing password from user from console input
