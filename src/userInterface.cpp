@@ -42,25 +42,8 @@ void UserInterface::openMainMenu(){
     std::cout << "Welcome to the Password Manager" << std::endl;
     std::cout << "1. Add a new password" << std::endl;
     std::cout << "2. View all passwords" << std::endl;
-    std::cout << "3. Exit" << std::endl;
+    std::cout << "3. View A password" << std::endl;
+    std::cout << "4. Exit" << std::endl;
     std::cout << "Enter your choice: ";
-    int choice;
-    std::cin >> choice;
-    switch(choice){
-        case 1:
-            // add a new password
-            break;
-        case 2:
-            // view all passwords
-            break;
-        case 3:
-            // exit the program
-            std::cout << std::endl << "Exiting the program" << std::endl;
-            exit(0);
-            break;
-        default:
-            std::cout << "Invalid choice" << std::endl;
-            break;
-    }
 }
 

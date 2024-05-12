@@ -58,7 +58,7 @@ public:
 
 class UserDatabasePasswordManager{
 public:
-    void addPassword(std::string password, std::string username, std::string website, std::string key);
+    bool addPassword(std::string password, std::string username, std::string website, std::string key);
     void removePassword(std::string password, std::string username, std::string website, std::string key);
     void editPassword(std::string password, std::string username, std::string website, std::string key);
 };

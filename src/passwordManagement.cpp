@@ -66,13 +66,13 @@ Created in 2023 by NSOLIVEN
             std::cout << "Enter your master password, [Input is hidden]: ";
         }
         if(type==0&&hidden){
-            std::cout << "Enter your wanted password, [Input is hidden]: ";
+            std::cout << "Enter a password, [Input is hidden]: ";
         }
         if(type==1&&!hidden){
             std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";
         }
         if(type==0&&!hidden){
-            std::cout << "Enter your wanted password, [Input is NOT HIDDEN]: ";
+            std::cout << "Enter a password, [Input is NOT HIDDEN]: ";
         }
 
         if (hidden) {
@@ -150,7 +150,7 @@ Created in 2023 by NSOLIVEN
         getline(inFile, masterPass);
 
 
-        std::string userInput = getPasswordFromUser();
+        std::string userInput = getPasswordFromUser(1, true);
 
         if(masterPass==userInput){return true;}
         return false;

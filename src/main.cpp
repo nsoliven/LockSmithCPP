@@ -54,8 +54,31 @@ int main(){
     }
 
 
-
     //now logged in 
+    ui.openMainMenu();
+    while(true){
+        int choice = 0;
+        if(std::cin >> choice){
+            switch(choice){
+            case 1: //ADD ALL PASSWORDS
+                break;
+            case 2: //VIEW ALL PASSWORD
+                break;
+            case 3: //VIEW A PASSWORD
+                
+                break;
+            case 4: // EXIT THE PROGRAM
+                std::cout << std::endl << "Exiting the program" << std::endl;
+                exit(0);
+                break;
+            default: // INVALID CHOICE
+                std::cout << "Invalid choice" << std::endl;
+                break;
+            }
+        }else{
+            std::cout << "Invalid input, please enter a valid number." << std::endl;
+        }
+    }
 
 
     return 0;
