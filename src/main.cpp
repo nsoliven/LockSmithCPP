@@ -24,9 +24,6 @@ Created in 2023 by NSOLIVEN
 */
 
 
-
-
-
 #include "userInterface.h"
 #include "encryptionAlgorithm.h"
 #include "passwordmanagement.h"
@@ -53,12 +50,12 @@ int main(){
         if(systemPass.masterPasswordLogin(masterFile)){break;}
         std::cout<< "Wrong Password! Attempts Left = [" <<
         (maxLoginAttempts-i) << " of " << maxLoginAttempts << "]\n";
-
         if(i==maxLoginAttempts){cout<< "MAX ATTEMPTS REACHED, EXITING PROGRAM\n"; return 1;}
     }
 
-    //now logged in 
 
+
+    //now logged in 
 
 
     return 0;
