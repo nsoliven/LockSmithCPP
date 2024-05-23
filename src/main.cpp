@@ -26,7 +26,7 @@ Created in 2023 by NSOLIVEN
 
 #include "userInterface.h"
 #include "encryptionAlgorithm.h"
-#include "passwordmanagement.h"
+#include "passwordManagement.h"
 
 const string dbName = "lockSmithDB.db3";
 const string masterFile = "master_password";
@@ -54,13 +54,13 @@ int main(){
     }
 
 
-    //now logged in 
-    ui.openMainMenu();
+    //now logged in, OPEN MAIN MENU PAGE
     while(true){
+        ui.openMainMenu();
         int choice = 0;
         if(std::cin >> choice){
             switch(choice){
-            case 1: //ADD ALL PASSWORDS
+            case 1: //ADD A PASSWORD
                 break;
             case 2: //VIEW ALL PASSWORD
                 break;

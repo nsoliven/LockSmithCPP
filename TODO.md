@@ -13,3 +13,21 @@
 
 ## ENCRYPTION.CPP
 - [ ] FULL ON WORK IN PROGRESS
+
+# NOTES:
+
+## MAIN.CPP
+CLASSES: N/A
+
+## PASSWORDMANAGEMENT
+CLASSES:
+  - Database
+  - SystemPasswordManagement
+    - 
+    - 
+
+## ENCRYPTION.CPP
+CLASSES:
+
+## USERINTERFACE.CPP
+CLASSES:

@@ -10,7 +10,7 @@ Created in 2023 by NSOLIVEN
 // will be used to edit the database of passwords for storing
 // and retrieving passwords
 
-#include <passwordmanagement.h>
+#include <passwordManagement.h>
 
 // Define the password management functions
     Database::Database(const std::string &dbFileName){
@@ -60,7 +60,6 @@ Created in 2023 by NSOLIVEN
      * @param hidden bool if to hide data or not
      * @return string of password grabbed
      */
-
     std::string SystemPasswordManagement::getPasswordFromUser(int type=1, bool hidden = true){
         if(type==1&&hidden){
             std::cout << "Enter your master password, [Input is hidden]: ";
