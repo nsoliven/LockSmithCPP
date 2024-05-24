@@ -3,7 +3,7 @@
 ## MAIN.CPP
 - [ ] UI, Allow user to choose between options then grabbing
 
-## PASSWORDMANAGEMENT
+## PASSWORDMANAGEMENT.cpp
 - [ ] Setup DB 
   - [ ] Allow DB to add passwords
   - [ ] Allow for removal of password
@@ -13,21 +13,3 @@
 
 ## ENCRYPTION.CPP
 - [ ] FULL ON WORK IN PROGRESS
-
-# NOTES:
-
-## MAIN.CPP
-CLASSES: N/A
-
-## PASSWORDMANAGEMENT
-CLASSES:
-  - Database
-  - SystemPasswordManagement
-    - 
-    - 
-
-## ENCRYPTION.CPP
-CLASSES:
-
-## USERINTERFACE.CPP
-CLASSES:

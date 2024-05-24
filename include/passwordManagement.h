@@ -28,11 +28,6 @@ Created in 2023 by NSOLIVEN
 // and retrieving passwords using sqlite3
 
 // creates a new database class for the actual management of the database
-class User{
-private:
-    std::string hashedPassword;
-public:
-};
 
 class Database{
 private:
@@ -56,11 +51,5 @@ public:
     std::string getPasswordFromUser(int type,bool hidden);
 };
 
-class UserDatabasePasswordManager{
-public:
-    bool addPassword(std::string password, std::string username, std::string website, std::string key);
-    void removePassword(std::string password, std::string username, std::string website, std::string key);
-    void editPassword(std::string password, std::string username, std::string website, std::string key);
-};
 
 #endif
