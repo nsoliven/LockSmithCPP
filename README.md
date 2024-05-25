@@ -67,8 +67,8 @@
 
 | Name           | Type   | Description                             |
 | --------------- | ------ | --------------------------------------- |
-| Hashed user password |  | Stores the hashed user password        |
-| Database Object |        | An instance of the Database class      |
+| Hashed user password | String  | Stores the hashed user password        |
+| Database Object |    Database    | An instance of the Database class      |
 
 ### SystemPasswordManagement Class Methods
 

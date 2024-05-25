@@ -40,12 +40,17 @@ public:
     bool declareDatabase();
     bool checkIfDatabaseExists();
     bool getIfNewInstance();
+    bool addItem(const std::string &pass_name, const std::string &username, const std::string &password);
+    bool removeItem(const std::string &pass_name);
+    bool viewItem(const std::string &pass_name);
 };
 
 
 class SystemPasswordManagement{
 private:
+    Database db;
 public:
+    SystemPasswordManagement(const std::string &dbFileName);
     bool masterPasswordSetup(const std::string& masterpasslocation);
     bool masterPasswordLogin(const std::string& masterpasslocation);
     std::string getPasswordFromUser(int type,bool hidden);

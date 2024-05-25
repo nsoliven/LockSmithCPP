@@ -5,11 +5,12 @@
 
 ## PASSWORDMANAGEMENT.cpp
 - [ ] Setup DB 
-  - [ ] Allow DB to add passwords
-  - [ ] Allow for removal of password
-  - [ ] Allow for viewing whole list of passwords
+  - [ ] Allow DB to add item
+  - [ ] Allow for removal of item
+  - [ ] Allow for search
 - [ ] Setup user input for passwords (Master and Normal)
 - [x] Initialization for the DB / Building if new instance 
+- [ ] Migrating code to use SystemPasswordManagement only for managing passwords in main.cpp
 
 ## ENCRYPTION.CPP
 - [ ] FULL ON WORK IN PROGRESS

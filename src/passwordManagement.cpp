@@ -13,9 +13,9 @@ Created in 2023 by NSOLIVEN
 #include <passwordManagement.h>
 
 // Define the password management functions
-    Database::Database(const std::string &dbFileName){
-        this->dbFileName = dbFileName;
-        this->newInstance = !checkIfDatabaseExists();
+    Database::Database(const std::string &dbFileName = "lockSmithDB.db3")
+    : dbFileName(dbFileName) , newInstance(!checkIfDatabaseExists())
+    {
         if(this->newInstance){
             declareDatabase();
         }
@@ -25,7 +25,6 @@ Created in 2023 by NSOLIVEN
         std::ifstream file(this->dbFileName);
         return file.good();
     }
-    
 
     bool Database::declareDatabase(){
         try{
@@ -46,6 +45,18 @@ Created in 2023 by NSOLIVEN
 
     bool Database::getIfNewInstance(){
         return this->newInstance;
+    }
+    /**
+     * @brief Initialize the program's SystemPasswordManagement Class
+     * 
+     * @param filename string
+     * @return N/A
+     */
+
+    SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName = "lockSmithDB.db3")
+    : db(dbFileName)
+    {
+        
     }
 
     /**

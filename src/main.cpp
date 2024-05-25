@@ -35,7 +35,7 @@ const unsigned int maxLoginAttempts = 5;
 
 int main(){
     //create our objects for use of functions
-    SystemPasswordManagement systemPass;
+    SystemPasswordManagement systemPass(dbName);
     UserInterface ui;
     Database dbManager(dbName);
 
