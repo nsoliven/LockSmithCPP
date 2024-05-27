@@ -49,10 +49,12 @@ public:
 class SystemPasswordManagement{
 private:
     Database db;
+    std::string masterPasswordHash;
 public:
     SystemPasswordManagement(const std::string &dbFileName);
     bool masterPasswordSetup(const std::string& masterpasslocation);
     bool masterPasswordLogin(const std::string& masterpasslocation);
+    bool isDatabaseNew();
     std::string getPasswordFromUser(int type,bool hidden);
 };
 

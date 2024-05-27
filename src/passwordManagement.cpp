@@ -47,17 +47,14 @@ Created in 2023 by NSOLIVEN
         return this->newInstance;
     }
     /**
-     * @brief Initialize the program's SystemPasswordManagement Class
+     * @brief Initialize the program's SystemPasswordManagement Class, Initialize DB object
      * 
      * @param filename string
      * @return N/A
      */
 
     SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName = "lockSmithDB.db3")
-    : db(dbFileName)
-    {
-        
-    }
+    : db(dbFileName){}
 
     /**
      * @brief Used for grabbing password from user from console input
@@ -125,7 +122,7 @@ Created in 2023 by NSOLIVEN
 
     /**
      * @brief Used for if user decides to setup a new system, we will store the password securely.
-     *  
+     *  [UNSECURE]
      * @return Bool if setup successful!
      */
 
@@ -145,7 +142,7 @@ Created in 2023 by NSOLIVEN
     }
 
     /**
-     * @brief PasswordManagerPrompts a login
+     * @brief PasswordManagerPrompts a login [UNSECURE]
      *  
      * @return Bool if success
      */
@@ -159,9 +156,12 @@ Created in 2023 by NSOLIVEN
         std::string masterPass;
         getline(inFile, masterPass);
 
-
         std::string userInput = getPasswordFromUser(1, true);
 
         if(masterPass==userInput){return true;}
         return false;
+    }
+
+    bool SystemPasswordManagement::isDatabaseNew(){
+        return db.getIfNewInstance();
     }

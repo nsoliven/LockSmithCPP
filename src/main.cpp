@@ -34,13 +34,12 @@ const int keyLength = 16;
 const unsigned int maxLoginAttempts = 5;
 
 int main(){
-    //create our objects for use of functions
+    //setup the main program with object's constructor
     SystemPasswordManagement systemPass(dbName);
     UserInterface ui;
-    Database dbManager(dbName);
 
     //check if we are setting up database and masterpassword
-    if(dbManager.getIfNewInstance()){
+    if(systemPass.isDatabaseNew()){
         ui.openNewInstanceMenu();
         systemPass.masterPasswordSetup(masterFile);
     }else{ui.openLoginMenu();}
