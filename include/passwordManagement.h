@@ -43,6 +43,7 @@ public:
     bool addItem(const std::string &pass_name, const std::string &username, const std::string &password);
     bool removeItem(const std::string &pass_name);
     bool viewItem(const std::string &pass_name);
+    bool listItems();
 };
 
 

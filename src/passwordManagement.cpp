@@ -21,11 +21,6 @@ Created in 2023 by NSOLIVEN
         }
     }
 
-   bool Database::checkIfDatabaseExists(){
-        std::ifstream file(this->dbFileName);
-        return file.good();
-    }
-
     bool Database::declareDatabase(){
         try{
             SQLite::Database passdb(this->dbFileName, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
@@ -43,6 +38,11 @@ Created in 2023 by NSOLIVEN
         return true;
     }
 
+   bool Database::checkIfDatabaseExists(){
+        std::ifstream file(this->dbFileName);
+        return file.good();
+    }
+
     bool Database::getIfNewInstance(){
         return this->newInstance;
     }
@@ -55,6 +55,61 @@ Created in 2023 by NSOLIVEN
 
     SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName = "lockSmithDB.db3")
     : db(dbFileName){}
+
+    /**
+     * @brief After user inputs all the data needed, addItem will store the data inside of the DB
+     * 
+     * @param pass_name const string&: Name of the password database entry
+     * @param username const string&: Username Associated with password database entry
+     * @param password const string&: Password Associated
+     *  
+     * @return if successful or not
+     */
+    bool Database::addItem(const std::string &pass_name, const std::string &username, const std::string &password){
+        try{
+            SQLite::Database db(this->dbFileName, SQLite::OPEN_READWRITE);
+
+            std::string sql = "INSERT INTO locksmithData (password_name, email_username, password) VALUES (?, ?, ?)";
+            SQLite::Statement stmt(db, sql);
+
+            // Bind values to the placeholders
+            stmt.bind(1, pass_name);
+            stmt.bind(2, username);
+            stmt.bind(3, password);
+
+            // Execute the prepared statement
+            stmt.exec();
+
+        }catch (SQLite::Exception& e) { 
+            std::cerr << "SQLite error adding item: " << e.what() << std::endl;
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * @brief Remove the password item with the name passed through
+     * 
+     * @param pass_name const string&: Name of the password database entry
+     *  
+     * @return if successful or not
+     */
+    bool Database::removeItem(const std::string &pass_name){
+
+    }
+
+    /**
+     * @brief View the details of a specific password
+     * 
+     * @param pass_name const string&: Name of the password database entry
+     *  
+     * @return if successful or not
+     */
+    bool viewItem(const std::string &pass_name){
+
+    }
+
 
     /**
      * @brief Used for grabbing password from user from console input
