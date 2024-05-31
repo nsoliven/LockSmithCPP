@@ -156,19 +156,22 @@ Created in 2023 by NSOLIVEN
      * @return string of password grabbed
      */
     std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, const bool &hidden = true){
-        if(type==1&&hidden){
-            std::cout << "Enter your master password, [Input is hidden]: ";
+        switch(type){
+            case 0:
+                if(hidden){
+                    std::cout << "Enter a password, [Input is hidden]: ";
+                }else{std::cout << "Enter a password, [Input is NOT HIDDEN]: ";}
+                break;
+            case 1:
+                if(hidden){
+                    std::cout << "Enter your master password, [Input is hidden]: ";
+                }else{std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";}
+                break;
+            default:
+                std::cerr << "SystemPasswordManagemtn invalid type: " << type << std::endl;
+                return "!errored!";
+                break;
         }
-        if(type==0&&hidden){
-            std::cout << "Enter a password, [Input is hidden]: ";
-        }
-        if(type==1&&!hidden){
-            std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";
-        }
-        if(type==0&&!hidden){
-            std::cout << "Enter a password, [Input is NOT HIDDEN]: ";
-        }
-
         if (hidden) {
             #ifdef _WIN32
             HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
@@ -183,7 +186,6 @@ Created in 2023 by NSOLIVEN
             tcsetattr(STDIN_FILENO, TCSANOW, &newt);
             #endif
         }
-
         std::string password = "";
         std::getline(std::cin, password);
         std::cout << std::endl;
@@ -205,6 +207,32 @@ Created in 2023 by NSOLIVEN
         return password;
     }
 
+    /**
+     * @brief Used for grabbing password from user from console input
+     *        Console input is hidden to prevent visual stealing of password with bool
+     * 
+     *        Password not hashed here yet, it is stored in plain text and is vulnerable in memory.
+     *
+     * @param type Type of password we are getting,
+     *        0 = getPasswordName
+     *        1 = getEmail
+     * @param hidden bool if to hide data or not, default true
+     * @return string of password grabbed
+     */
+    
+    std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
+        switch(type){
+            case 0:
+            std::cout<<"Enter your";
+                break;
+            case 1:
+                break;
+        }
+
+
+
+
+    }
 
 
     /**
@@ -250,6 +278,7 @@ Created in 2023 by NSOLIVEN
     }
 
     bool SystemPasswordManagement::addPassword(){
+        getStringFromUser();
         getPasswordFromUser();
         return true;
     }
