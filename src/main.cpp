@@ -28,10 +28,12 @@ Created in 2023 by NSOLIVEN
 #include "encryptionAlgorithm.h"
 #include "passwordManagement.h"
 
-const string dbName = "lockSmithDB.db3";
+const string dbName = ":memory:";
 const string masterFile = "master_password";
 const int keyLength = 16;
 const unsigned int maxLoginAttempts = 5;
+const unsigned int MASTER_PASSWORD_GET = 1;
+const unsigned int REGULAR_PASSWORD_GET = 0;
 
 int main(){
     //setup the main program with object's constructor
@@ -64,7 +66,6 @@ int main(){
             case 2: //VIEW ALL PASSWORD
                 break;
             case 3: //VIEW A PASSWORD
-                
                 break;
             case 4: // EXIT THE PROGRAM
                 std::cout << std::endl << "Exiting the program" << std::endl;

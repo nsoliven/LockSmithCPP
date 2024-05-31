@@ -95,8 +95,21 @@ Created in 2023 by NSOLIVEN
      *  
      * @return if successful or not
      */
-    bool Database::removeItem(const std::string &pass_name){
+    bool Database::removeItem(const std::string &pass_name) {
+        try {
+            SQLite::Database db(this->dbFileName, SQLite::OPEN_READWRITE);
 
+            std::string sql = "DELETE FROM locksmithData WHERE password_name = ?";
+            SQLite::Statement stmt(db, sql);
+            stmt.bind(1, pass_name);
+            
+            int rowsAffected = stmt.exec(); // Get the number of rows deleted
+            return rowsAffected > 0; // Return true if at least one row was deleted
+
+        } catch (SQLite::Exception &e) {
+            std::cerr << "SQLite error removing item: " << e.what() << std::endl;
+            return false;
+        }
     }
 
     /**
@@ -106,10 +119,29 @@ Created in 2023 by NSOLIVEN
      *  
      * @return if successful or not
      */
-    bool viewItem(const std::string &pass_name){
+    bool Database::viewItem(const std::string &pass_name) { 
+        std::string username;
+        std::string password;
+        try {
+            SQLite::Database db(this->dbFileName, SQLite::OPEN_READONLY);
+            std::string sql = "SELECT email_username, password FROM locksmithData WHERE password_name = ?";
+            SQLite::Statement stmt(db, sql);
+            stmt.bind(1, pass_name);
 
+            if (stmt.executeStep()) { // If the query returned a result
+                username = stmt.getColumn(0).getString();
+                password = stmt.getColumn(1).getString();
+                return true;
+            }
+        } catch (SQLite::Exception &e) {
+            std::cerr << "SQLite error viewing item: " << e.what() << std::endl;
+        }
+        return false; // Return false if no item was found or an error occurred
     }
 
+    bool SystemPasswordManagement::isDatabaseNew(){
+        return db.getIfNewInstance();
+    }
 
     /**
      * @brief Used for grabbing password from user from console input
@@ -120,10 +152,10 @@ Created in 2023 by NSOLIVEN
      * @param type Type of password we are getting,
      *        0 = (default) get password for regular storing
      *        1 = get master password
-     * @param hidden bool if to hide data or not
+     * @param hidden bool if to hide data or not, default true
      * @return string of password grabbed
      */
-    std::string SystemPasswordManagement::getPasswordFromUser(int type=1, bool hidden = true){
+    std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, const bool &hidden = true){
         if(type==1&&hidden){
             std::cout << "Enter your master password, [Input is hidden]: ";
         }
@@ -217,6 +249,17 @@ Created in 2023 by NSOLIVEN
         return false;
     }
 
-    bool SystemPasswordManagement::isDatabaseNew(){
-        return db.getIfNewInstance();
+    bool SystemPasswordManagement::addPassword(){
+        getPasswordFromUser();
+        return true;
+    }
+
+    bool SystemPasswordManagement::removePassword(){
+
+        return true;
+    }
+
+    bool SystemPasswordManagement::viewPassword(){
+
+        return true;
     }

@@ -12,13 +12,6 @@ Created in 2023 by NSOLIVEN
 
 We will use this file for all the interface functions.
 
-list to do:
-- openNewInstanceMenu
-- openLoginMenu
-- openMainMenu
-- openAddPasswordMenu(s)
-- openViewPasswordsMenu
-- openExitMenu
 */
 
 
