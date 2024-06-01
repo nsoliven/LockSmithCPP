@@ -49,6 +49,7 @@ public:
 
 class SystemPasswordManagement{
 private:
+    bool hasErrored = false;
     Database db;
     std::string masterPasswordHash;
 public:

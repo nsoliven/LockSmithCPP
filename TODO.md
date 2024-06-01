@@ -12,6 +12,7 @@
 - [ ] Setup user input for passwords (Master and Normal)
 - [x] Initialization for the DB / Building if new instance 
 - [x] Migrating code to use SystemPasswordManagement only for managing passwords in main.cpp
+- [ ] Implement input validation checker
 
 ## ENCRYPTION.CPP
 - [ ] FULL ON WORK IN PROGRESS

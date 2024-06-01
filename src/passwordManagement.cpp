@@ -168,7 +168,7 @@ Created in 2023 by NSOLIVEN
                 }else{std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";}
                 break;
             default:
-                std::cerr << "SystemPasswordManagemtn invalid type: " << type << std::endl;
+                std::cerr << "SystemPasswordManagement invalid type: " << type << std::endl;
                 return "!errored!";
                 break;
         }
@@ -223,15 +223,26 @@ Created in 2023 by NSOLIVEN
     std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
         switch(type){
             case 0:
-            std::cout<<"Enter your";
+            std::cout<<"Enter your Password NAME: ";
                 break;
             case 1:
+            std::cout<<"Enter your USERNAME/EMAIL: ";
+                break;
+            default:
+                std::cerr << "SystemPasswordManagement invalid type: " << type << std::endl;
+                return "!errored!";
                 break;
         }
 
+        std::string temp = "";
+        std::getline(std::cin, temp);
+        std::cout << std::endl;
 
-
-
+        if (temp.size() < 255) {
+            return temp;
+        } else {
+            throw std::invalid_argument("Input exceeds 254 characters. Please enter a shorter string.");
+        }
     }
 
 
