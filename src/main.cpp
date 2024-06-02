@@ -62,6 +62,10 @@ int main(){
         if(std::cin >> choice){
             switch(choice){
             case 1: //ADD A PASSWORD
+                if(!systemPass.addPassword()){
+                    std::cout << "ADD PASSWORD FAIL";
+                    return 1;
+                }
                 break;
             case 2: //VIEW ALL PASSWORD
                 break;

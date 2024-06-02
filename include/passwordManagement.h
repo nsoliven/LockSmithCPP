@@ -42,13 +42,20 @@ public:
     bool getIfNewInstance();
     bool addItem(const std::string &pass_name, const std::string &username, const std::string &password);
     bool removeItem(const std::string &pass_name);
-    bool viewItem(const std::string &pass_name);
+    bool getItem(const std::string &pass_name,std::string &username,std::string &password);
     bool listItems();
 };
 
 
 class SystemPasswordManagement{
 private:
+    //const used for functions with "TYPE Argument"
+    const int GET_PASSWORD_NAME = 0;
+    const int GET_EMAIL_USERNAME = 1;
+    const int GET_MASTERPASSWORD = 0;
+    const int GET_REGULARPASSWORD = 1;
+
+
     bool hasErrored = false;
     Database db;
     std::string masterPasswordHash;

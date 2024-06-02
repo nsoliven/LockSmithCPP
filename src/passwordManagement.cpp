@@ -119,9 +119,7 @@ Created in 2023 by NSOLIVEN
      *  
      * @return if successful or not
      */
-    bool Database::viewItem(const std::string &pass_name) { 
-        std::string username;
-        std::string password;
+    bool Database::getItem(const std::string &pass_name,std::string &username,std::string &password) { 
         try {
             SQLite::Database db(this->dbFileName, SQLite::OPEN_READONLY);
             std::string sql = "SELECT email_username, password FROM locksmithData WHERE password_name = ?";
@@ -219,7 +217,6 @@ Created in 2023 by NSOLIVEN
      * @param hidden bool if to hide data or not, default true
      * @return string of password grabbed
      */
-    
     std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
         switch(type){
             case 0:
@@ -229,9 +226,8 @@ Created in 2023 by NSOLIVEN
             std::cout<<"Enter your USERNAME/EMAIL: ";
                 break;
             default:
-                std::cerr << "SystemPasswordManagement invalid type: " << type << std::endl;
-                return "!errored!";
-                break;
+                throw std::invalid_argument
+                ("Invalid use of std::string SystemPasswordManagement::getStringFromUser");
         }
 
         std::string temp = "";
@@ -241,7 +237,8 @@ Created in 2023 by NSOLIVEN
         if (temp.size() < 255) {
             return temp;
         } else {
-            throw std::invalid_argument("Input exceeds 254 characters. Please enter a shorter string.");
+            throw std::out_of_range
+            ("Input exceeds 254 characters. Please enter a shorter string.");
         }
     }
 
@@ -289,17 +286,44 @@ Created in 2023 by NSOLIVEN
     }
 
     bool SystemPasswordManagement::addPassword(){
-        getStringFromUser();
-        getPasswordFromUser();
+
+        std::string passwordName = "";
+        std::string emailUsername = "";
+
+        try{
+            passwordName = getStringFromUser(GET_PASSWORD_NAME);
+            emailUsername = getStringFromUser(GET_EMAIL_USERNAME);
+            std::string password = getPasswordFromUser(GET_REGULARPASSWORD,true);
+            if(!db.addItem(passwordName,emailUsername,password)){
+                return false;
+            }
+        }catch(const std::invalid_argument& e){
+            std::cout << e.what();
+            return false;
+        }
+        
+        // else we return true since success
         return true;
     }
 
     bool SystemPasswordManagement::removePassword(){
-
+        std::string passwordName = "";
         return true;
     }
 
     bool SystemPasswordManagement::viewPassword(){
+        std::string passwordName = "";
+        std::string emailUsername = "";
+        std::string password = "";
 
-        return true;
+        //if errored exit function false
+        if(!db.getItem(passwordName,emailUsername,password)){
+            return false;
+        }
+            std::cout << "Password Details:\n"
+              << "-----------------\n"
+              << "Password Name: " << passwordName << "\n"
+              << "Email/Username: " << emailUsername << "\n"
+              << "Password: " << password << "\n"
+              << "-----------------\n";
     }
