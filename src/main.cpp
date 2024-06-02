@@ -28,7 +28,7 @@ Created in 2023 by NSOLIVEN
 #include "encryptionAlgorithm.h"
 #include "passwordManagement.h"
 
-const string dbName = ":memory:";
+const string dbName = "lockSmithDB.db3";
 const string masterFile = "master_password";
 const int keyLength = 16;
 const unsigned int maxLoginAttempts = 5;
@@ -82,6 +82,8 @@ int main(){
         }else{
             std::cout << "Invalid input, please enter a valid number." << std::endl;
         }
+
+        std::cout << "Showing Options Again." ;
     }
 
 
