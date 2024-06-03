@@ -33,11 +33,11 @@ class Database{
 private:
     std::string dbFileName;
     bool newInstance;
+    bool declareDatabase();
 public:
     // define the database functions
     // declare database
     Database(const std::string &dbFileName);
-    bool declareDatabase();
     bool checkIfDatabaseExists();
     bool getIfNewInstance();
     bool addItem(const std::string &pass_name, const std::string &username, const std::string &password);
@@ -50,11 +50,11 @@ public:
 class SystemPasswordManagement{
 private:
     //const used for functions with "TYPE Argument"
-    const int GET_PASSWORD_NAME = 0;
-    const int GET_EMAIL_USERNAME = 1;
-    const int GET_MASTERPASSWORD = 1;
-    const int GET_REGULARPASSWORD = 0;
-
+    static constexpr int GET_PASSWORD_NAME = 0;
+    static constexpr int GET_EMAIL_USERNAME = 1;
+    static constexpr int GET_MASTERPASSWORD = 1;
+    static constexpr int GET_REGULARPASSWORD = 0;
+    static constexpr int MAX_PASSWORD_LENGTH = 255;
 
     bool hasErrored = false;
     Database db;
@@ -73,4 +73,4 @@ public:
 };
 
 
-#endif
+#endif // PASSWORDMANAGEMENT_H

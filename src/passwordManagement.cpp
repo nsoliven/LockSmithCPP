@@ -13,6 +13,13 @@ Created in 2023 by NSOLIVEN
 #include <passwordManagement.h>
 
 // Define the password management functions
+
+/**
+ * @brief Constructor for Database Object.
+ * Initializes database and saves if newInstance.
+ * 
+ * @param string dbFileName string
+ */
 Database::Database(const std::string &dbFileName = "lockSmithDB.db3")
 : dbFileName(dbFileName) , newInstance(!checkIfDatabaseExists())
 {
@@ -21,6 +28,12 @@ Database::Database(const std::string &dbFileName = "lockSmithDB.db3")
     }
 }
 
+/**
+ * @brief Initializes database.
+ * Not called outside of class
+ * 
+ * @return Bool if success or not
+ */
 bool Database::declareDatabase(){
     try{
         SQLite::Database passdb(this->dbFileName, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
@@ -38,21 +51,34 @@ bool Database::declareDatabase(){
     return true;
 }
 
+/**
+ * @brief checks if the database exists BEFORE the constructor initializses
+ * 
+ * @return true if database exists
+ */
 bool Database::checkIfDatabaseExists(){
     std::ifstream file(this->dbFileName);
     return file.good();
 }
 
+
+/**
+ * @brief getter for newInstance
+ * 
+ * @return true if new instance
+ */
 bool Database::getIfNewInstance(){
     return this->newInstance;
 }
-/**
- * @brief Initialize the program's SystemPasswordManagement Class, Initialize DB object
- * 
- * @param filename string
- * @return N/A
- */
 
+//-------------------------------
+
+/**
+ * @brief Constructor for SystemPasswordManagement, SystemPasswordManagement initializes
+ * a DB object along with dbFileName
+ * 
+ * @param string dbFileName string
+ */
 SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName = "lockSmithDB.db3")
 : db(dbFileName){}
 
@@ -146,6 +172,11 @@ bool Database::getItem(const std::string &pass_name,std::string &username,std::s
     return false; // Return false if no item was found or an error occurred
 }
 
+/**
+ * @brief checks db object inside if newInstance
+ * 
+ * @return true if new instance
+ */
 bool SystemPasswordManagement::isDatabaseNew(){
     return db.getIfNewInstance();
 }
@@ -197,8 +228,8 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
     std::string password = "";
     std::getline(std::cin, password);
 
-    if(password.length() < 1 || password.length() > 255){
-        std::cerr << "BAD LENGTH, 1 <= PASSWORD <= 255" << std::endl;
+    if(password.length() < 1 || password.length() > MAX_PASSWORD_LENGTH){
+        std::cerr << "BAD LENGTH, 1 <= PASSWORD <= "<< MAX_PASSWORD_LENGTH << std::endl;
         continue;
     }
 
@@ -249,7 +280,7 @@ std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
     std::string temp = "";
     std::getline(std::cin, temp);
 
-    if (temp.size() < 255) {
+    if (temp.size() < MAX_PASSWORD_LENGTH) {
         return temp;
     } else {
         throw std::out_of_range
@@ -263,7 +294,6 @@ std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
  *  [UNSECURE]
  * @return Bool if setup successful!
  */
-
 bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpasslocation){
 
     std::ofstream outFile(masterpasslocation);
@@ -300,6 +330,12 @@ bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpass
     return false;
 }
 
+
+/**
+ * @brief PasswordManagerPrompts a login
+ *  
+ * @return Bool if success
+ */
 bool SystemPasswordManagement::addPassword(){
     try{
         std::string passwordName = getStringFromUser(GET_PASSWORD_NAME);
@@ -317,11 +353,21 @@ bool SystemPasswordManagement::addPassword(){
     return true;
 }
 
+/**
+ * @brief PasswordManagerPrompts and handles DB for password removal
+ *  
+ * @return Bool if success
+ */
 bool SystemPasswordManagement::removePassword(){
     std::string passwordName = "";
     return true;
 }
 
+/**
+ * @brief PasswordManagerPrompts and handles DB for password view
+ *  
+ * @return Bool if success
+ */
 bool SystemPasswordManagement::viewPassword(){
     std::string passwordName = "";
     std::string emailUsername = "";
