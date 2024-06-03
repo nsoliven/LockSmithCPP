@@ -68,6 +68,15 @@ SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName
 bool Database::addItem(const std::string &pass_name, const std::string &username, const std::string &password){
     try{
         SQLite::Database db(this->dbFileName, SQLite::OPEN_READWRITE);
+        //First we will check if pass_name already existed
+        std::string checkSql = "SELECT COUNT(*) FROM locksmithData WHERE password_name = ?";
+        SQLite::Statement checkStmt(db, checkSql);
+        checkStmt.bind(1, pass_name);
+        
+        if (checkStmt.executeStep() && checkStmt.getColumn(0).getInt() > 0) {
+            std::cerr << "Password name '" << pass_name << "' already exists." << std::endl;
+            return false;
+        }
 
         std::string sql = "INSERT INTO locksmithData (password_name, email_username, password) VALUES (?, ?, ?)";
         SQLite::Statement stmt(db, sql);
@@ -239,7 +248,6 @@ std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
 
     std::string temp = "";
     std::getline(std::cin, temp);
-    std::cout << std::endl;
 
     if (temp.size() < 255) {
         return temp;
@@ -265,7 +273,7 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
     }
     
     std::string password = "example password"; // example password
-    password = getPasswordFromUser();
+    password = getPasswordFromUser(GET_MASTERPASSWORD,true);
     outFile << password << std::endl;
 
     return true;
@@ -331,9 +339,10 @@ bool SystemPasswordManagement::viewPassword(){
         return false;
     }
     std::cout << "Password Details:\n"
-        << "-----------------\n"
+        << "--------------------------\n"
         << "Password Name: " << passwordName << "\n"
         << "Email/Username: " << emailUsername << "\n"
         << "Password: " << password << "\n"
-        << "-----------------\n";
+        << "--------------------------\n";
+    return true;
 }

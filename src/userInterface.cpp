@@ -32,7 +32,8 @@ void UserInterface::openLoginMenu(){
     std::cout << "--------------------------" << std::endl;
 }
 void UserInterface::openMainMenu(){
-    std::cout << "Welcome to the Password Manager" << std::endl;
+    std::cout << "--------------------------" << std::endl;
+    std::cout << "Welcome to LockSmith C++ by NSOLIVEN" << std::endl;
     std::cout << "1. Add a new password" << std::endl;
     std::cout << "2. View all passwords" << std::endl;
     std::cout << "3. View A password" << std::endl;

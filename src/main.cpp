@@ -58,32 +58,38 @@ int main(){
     //now logged in, OPEN MAIN MENU PAGE
     while(true){
         ui.openMainMenu();
-        int choice = 0;
-        if(std::cin >> choice){
+        std::string userIn;
+        std::getline(std::cin, userIn);
+        try{
+            int choice = std::stoi(userIn);
             switch(choice){
             case 1: //ADD A PASSWORD
                 if(!systemPass.addPassword()){
-                    std::cout << "ADD PASSWORD FAIL";
-                    return 1;
+                    std::cout << "Add password fail, restarting options" << std::endl;
+                    continue;
                 }
+                std::cout << "Added password to database success! Showing options....." << std::endl;
                 break;
             case 2: //VIEW ALL PASSWORD
                 break;
             case 3: //VIEW A PASSWORD
+                if(!systemPass.viewPassword()){
+                    std::cout << "View password fail, restarting options" << std::endl;
+                    continue;
+                }
+                std::cout << "View database password success! Showing options....." << std::endl;
                 break;
             case 4: // EXIT THE PROGRAM
-                std::cout << std::endl << "Exiting the program" << std::endl;
+                std::cout << std::endl << "Thank you for using LockSmith, Exiting the program" << std::endl;
                 exit(0);
                 break;
             default: // INVALID CHOICE
-                std::cout << "Invalid choice" << std::endl;
+                std::cerr << std::endl << "Invalid input, please enter a valid number." << std::endl;
                 break;
             }
-        }else{
-            std::cout << "Invalid input, please enter a valid number." << std::endl;
+        }catch (const std::invalid_argument& e){
+            std::cerr << std::endl << "Invalid input, please enter a valid number." << std::endl;
         }
-
-        std::cout << "Showing Options Again." ;
     }
 
 

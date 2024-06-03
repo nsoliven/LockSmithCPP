@@ -52,8 +52,8 @@ private:
     //const used for functions with "TYPE Argument"
     const int GET_PASSWORD_NAME = 0;
     const int GET_EMAIL_USERNAME = 1;
-    const int GET_MASTERPASSWORD = 0;
-    const int GET_REGULARPASSWORD = 1;
+    const int GET_MASTERPASSWORD = 1;
+    const int GET_REGULARPASSWORD = 0;
 
 
     bool hasErrored = false;
