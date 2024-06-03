@@ -1,4 +1,4 @@
-# LOCKSMITH - A C++ Based Password Manager (work in progress)
+# LOCKSMITH - A C++ Based Password Manager (!DB MANAGEMENT DONE!)
 
 **Skills Demonstrated:** C++, SQLite, SQL, Cryptography, Object-Oriented Programming
 
@@ -8,7 +8,7 @@
 
 1. **DATA IS NOT SECURE YET**
    - Data in the password manager is currently NOT hashed in any way.
-   - Will be stored secrurely in the future, development on database is the priority.
+   - Will be stored securely in the future, hashing and cryptography being worked on currently.
 
 ## User Installation
 
