@@ -71,15 +71,26 @@ int main(){
                 std::cout << "Added password to database success! Showing options....." << std::endl;
                 break;
             case 2: //VIEW ALL PASSWORD
+                if(!systemPass.listAllPasswords()){
+                    std::cout << std::endl << "List all password fail, restarting options" << std::endl;
+                    continue;
+                }
                 break;
             case 3: //VIEW A PASSWORD
                 if(!systemPass.viewPassword()){
                     std::cout << "View password fail, restarting options" << std::endl;
                     continue;
                 }
-                std::cout << "View database password success! Showing options....." << std::endl;
+                std::cout << std::endl << "View database password success! Showing options....." << std::endl;
                 break;
-            case 4: // EXIT THE PROGRAM
+            case 4: //DELETE A PASSWORD
+                if(!systemPass.removePassword()){
+                    std::cout << std::endl << "Remove password fail, restarting options" << std::endl;
+                    continue;
+                }
+                std::cout << std::endl << "Remove password success! Showing options....." << std::endl;
+                break;
+            case 5: // EXIT THE PROGRAM
                 std::cout << std::endl << "Thank you for using LockSmith, Exiting the program" << std::endl;
                 exit(0);
                 break;

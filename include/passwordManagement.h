@@ -16,6 +16,7 @@ Created in 2023 by NSOLIVEN
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -43,7 +44,7 @@ public:
     bool addItem(const std::string &pass_name, const std::string &username, const std::string &password);
     bool removeItem(const std::string &pass_name);
     bool getItem(const std::string &pass_name,std::string &username,std::string &password);
-    bool listItems();
+    bool listItems(std::vector<std::string> &item_names);
 };
 
 
@@ -69,7 +70,7 @@ public:
     bool addPassword();
     bool removePassword();
     bool viewPassword();
-
+    bool listAllPasswords();
 };
 
 

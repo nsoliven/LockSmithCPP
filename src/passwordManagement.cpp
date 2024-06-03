@@ -173,6 +173,30 @@ bool Database::getItem(const std::string &pass_name,std::string &username,std::s
 }
 
 /**
+ * @brief Lists all items in the db and saves in arr
+ * 
+ * @param string vector that will hold all items item_names
+ *  
+ * @return if successful or not
+ */
+bool Database::listItems(std::vector<std::string> &item_names){
+    try {
+        SQLite::Database db(this->dbFileName, SQLite::OPEN_READONLY);
+        std::string sql = "SELECT password_name FROM locksmithData";
+        SQLite::Statement stmt(db, sql);
+
+        while (stmt.executeStep()) {
+            item_names.push_back(stmt.getColumn(0).getString());
+        }
+
+        return true;
+    } catch (SQLite::Exception &e) {
+        std::cerr << "SQLite error listing items: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+/**
  * @brief checks db object inside if newInstance
  * 
  * @return true if new instance
@@ -360,6 +384,15 @@ bool SystemPasswordManagement::addPassword(){
  */
 bool SystemPasswordManagement::removePassword(){
     std::string passwordName = "";
+    try{
+        passwordName = getStringFromUser(GET_PASSWORD_NAME);
+    }catch(const std::invalid_argument& e){
+        std::cout << e.what();
+        return false;
+    }
+    if(!db.removeItem(passwordName)){
+        return false;
+    }
     return true;
 }
 
@@ -390,5 +423,33 @@ bool SystemPasswordManagement::viewPassword(){
         << "Email/Username: " << emailUsername << "\n"
         << "Password: " << password << "\n"
         << "--------------------------\n";
+    return true;
+}
+
+/**
+ * @brief PasswordManager simply prints all names of passwords
+ *  
+ * @return Bool if success
+ */
+
+bool SystemPasswordManagement::listAllPasswords(){
+    std::vector<std::string> pass_names_list;
+    if(!db.listItems(pass_names_list)){
+        return false;
+    }
+    std::cout << "Password Details:\n"
+              << "--------------------------\n";
+    for (unsigned int i = 0; i < pass_names_list.size(); ++i) {
+        const std::string &passwordName = pass_names_list[i];
+        std::string emailUsername, password;
+        if (db.getItem(passwordName, emailUsername, password)) {
+            std::cout << "Password Name: " << passwordName << "\n"
+                      << "Email/Username: " << emailUsername << "\n"
+                      << "Password: " << password << "\n";
+            std::cout << "--------------------------\n";
+        } else {
+            std::cerr << "Error retrieving details for password: " << passwordName << "\n";
+        }
+    }
     return true;
 }
