@@ -14,6 +14,21 @@
 
 - Dependencies already included. Download is in the versions.
 
+## User Compilation and Building
+```bash
+git clone https://github.com/nsoliven/LockSmithCPP
+cd LockSmithCPP
+git submodule init
+git submodule update
+mkdir build
+cd build
+cmake ..
+cmake --build ./ --config Debug --target all 
+./lockSmithAPP
+```
+
+Note: If ask git asks, trust the repo with command provided
+
 ## User Flow
 
 1. **Encryption and Data Storage:**
