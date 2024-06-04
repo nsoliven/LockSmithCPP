@@ -18,17 +18,16 @@ Created in 2023 by NSOLIVEN
 Complete WIP!
 
 */
-using namespace std;
 
 class Encryption {
 public:
     // Define the AES encryption and decryption functions
-    string aes_encrypt(string plaintext, string key);
-    string aes_decrypt(string ciphertext, string key);
+    std::string aes_encrypt(std::string plaintext, std::string key);
+    std::string aes_decrypt(std::string ciphertext, std::string key);
 
 
     // Define the key generation function
-    string generateKey(int length);
+    std::string generateKey(int length);
     
 };
 
