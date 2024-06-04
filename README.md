@@ -17,10 +17,13 @@
 - Dependencies already included. Download is in the versions.
 
 ## User Compilation and Building
+Windows:
 - Please have CMAKE & GIT installed on your system for building
 - Windows must have dos2unix to convert SQLiteCPP, Windows simply use VSCODE's CMAKE instead.
 
 UNIX/LINUX:
+=======
+- Please have CMAKE & GIT & GCC Compiler installed on your system for building
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
