@@ -20,7 +20,7 @@ Created in 2023 by NSOLIVEN
  * 
  * @param string dbFileName string
  */
-Database::Database(const std::string &dbFileName = "lockSmithDB.db3")
+Database::Database(const std::string &dbFileName)
 : dbFileName(dbFileName) , newInstance(!checkIfDatabaseExists())
 {
     if(this->newInstance){
@@ -79,7 +79,7 @@ bool Database::getIfNewInstance(){
  * 
  * @param string dbFileName string
  */
-SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName = "lockSmithDB.db3")
+SystemPasswordManagement::SystemPasswordManagement(const std::string &dbFileName)
 : db(dbFileName){}
 
 /**
