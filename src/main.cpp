@@ -28,8 +28,8 @@ Created in 2023 by NSOLIVEN
 #include "encryptionAlgorithm.h"
 #include "passwordManagement.h"
 
-const string dbName = "lockSmithDB.db3";
-const string masterFile = "master_password";
+const std::string dbName = "lockSmithDB.db3";
+const std::string masterFile = "master_password";
 const int keyLength = 16;
 const unsigned int maxLoginAttempts = 5;
 const unsigned int MASTER_PASSWORD_GET = 1;
@@ -51,7 +51,7 @@ int main(){
         if(systemPass.masterPasswordLogin(masterFile)){break;}
         std::cout<< "Wrong Password! Attempts Left = [" <<
         (maxLoginAttempts-i) << " of " << maxLoginAttempts << "]\n";
-        if(i==maxLoginAttempts){cout<< "MAX ATTEMPTS REACHED, EXITING PROGRAM\n"; return 1;}
+        if(i==maxLoginAttempts){std::cout<< "MAX ATTEMPTS REACHED, EXITING PROGRAM\n"; return 1;}
     }
 
 
