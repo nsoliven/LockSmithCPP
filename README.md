@@ -1,6 +1,8 @@
-# LOCKSMITH - A C++ Based Password Manager (!DB MANAGEMENT DONE!)
+# LOCKSMITH - A C++ Based Password Manager
 
 **Skills Demonstrated:** C++, SQLite, SQL, Cryptography, Object-Oriented Programming
+
+**(!DB MANAGEMENT DONE!)**
 
 🔐 A minimalistic password manager application built with C++ and SQL for learning purposes.
 
