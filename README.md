@@ -17,6 +17,7 @@
 - Dependencies already included. Download is in the versions.
 
 ## User Compilation and Building
+- Please have CMAKE & GIT installed on your system for building
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
