@@ -26,5 +26,10 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/SQLiteCpp)
 
 
 
-target_link_libraries(lockSmithApp lockSmithLib SQLiteCpp sqlite3 pthread dl)
+target_link_libraries(lockSmithApp lockSmithLib SQLiteCpp sqlite3 pthread)
+
+if(UNIX)
+    target_link_libraries(lockSmithApp PRIVATE dl)
+endif()
+
 include_directories(lib/SQLiteCpp/include)
