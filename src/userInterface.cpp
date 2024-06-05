@@ -20,6 +20,7 @@ We will use this file for all the interface functions.
 // define the main menu
 
 void UserInterface::openNewInstanceMenu(){
+    std::cout << "--------------------------" << std::endl;
     std::cout << "Welcome to LockSmith C++ by NSOLIVEN" << std::endl;
     std::cout << "--------------------------" << std::endl;
     std::cout << "We have detected that this is your first time using LockSmith C++" << std::endl;
@@ -27,11 +28,13 @@ void UserInterface::openNewInstanceMenu(){
 }
 
 void UserInterface::openLoginMenu(){
+    std::cout << "--------------------------" << std::endl;
     std::cout << "Welcome back to LockSmith C++ by NSOLIVEN" << std::endl;
     std::cout << "Please enter your password to unlock the database" << std::endl;
     std::cout << "--------------------------" << std::endl;
 }
 void UserInterface::openMainMenu(){
+    std::cout << "--------------------------" << std::endl;
     std::cout << std::endl<< "Welcome to LockSmith C++ by NSOLIVEN" << std::endl;
     std::cout << "--------------------------" << std::endl;
     std::cout << "1. Add a new password" << std::endl;
@@ -42,3 +45,9 @@ void UserInterface::openMainMenu(){
     std::cout << "Enter your choice: ";
 }
 
+void UserInterface::masterPasswordSetupSuccess(){
+    std::cout << "--------------------------" << std::endl;
+    std::cout << "Congratulations! Master-Password is now setup" << std::endl;
+    std::cout << "Continuing to login..." << std::endl;
+    std::cout << "--------------------------" << std::endl;
+}

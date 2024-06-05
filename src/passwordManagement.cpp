@@ -326,9 +326,23 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         return false;
     }
     
-    std::string password = "example password"; // example password
-    password = getPasswordFromUser(GET_MASTERPASSWORD,true);
-    outFile << password << std::endl;
+    bool masterPasswordStillSettingUp = true;
+    while(masterPasswordStillSettingUp){
+        std::string password = ""; // example password
+        std::string passwordConfirmation = ""; //confirm for later
+
+        password = getPasswordFromUser(GET_MASTERPASSWORD,true);
+        std::cout << "Please enter your password again to confirm" << std::endl;
+        passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
+
+
+        if(passwordConfirmation==password){
+            outFile << password << std::endl;
+            masterPasswordStillSettingUp = false;
+        }else{
+            std::cout << "Passwords did not match.. restarting setup" << std::endl << std::endl ;
+        }
+    }
 
     return true;
 }
