@@ -1,7 +1,7 @@
 /*
 
 Program under MIT License
-Learn more @ https://github.com/nsoliven/passmanager
+Learn more @ https://github.com/nsoliven/locksmithcpp
 Created in 2023 by NxSOLIVEN
 
 */
