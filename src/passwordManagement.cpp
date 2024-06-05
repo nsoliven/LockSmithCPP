@@ -241,6 +241,7 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
             return "!errored!";
             break;
         }
+    //used for hiding the user input
     if (hidden) {
         #ifdef _WIN32
         HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
@@ -277,9 +278,9 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
         #endif
         std::cout << std::endl;
     }
-
     return password;
     }
+
 }
 
 /**
@@ -345,6 +346,12 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         std::string passwordConfirmation = ""; //confirm for later
 
         password = getPasswordFromUser(GET_MASTERPASSWORD,true);
+        if(password.length() < MIN_MASTERPASS_LENGTH){
+            std::cout << "We recommend that you create a password longer than " <<
+            MIN_MASTERPASS_LENGTH << " Please re-enter a different password" << std::endl;
+            continue;
+        }
+
         std::cout << "Please enter your password again to confirm" << std::endl;
         passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
 

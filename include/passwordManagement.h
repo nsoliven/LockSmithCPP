@@ -56,6 +56,7 @@ private:
     static constexpr int GET_MASTERPASSWORD = 1;
     static constexpr int GET_REGULARPASSWORD = 0;
     static constexpr int MAX_PASSWORD_LENGTH = 255;
+    static constexpr int MIN_MASTERPASS_LENGTH = 8;
 
     bool hasErrored = false;
     Database db;
