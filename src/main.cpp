@@ -43,10 +43,16 @@ int main(){
     //check if we are setting up database and masterpassword
     if(systemPass.isDatabaseNew()){
         ui.openNewInstanceMenu();
-        systemPass.masterPasswordSetup(masterFile);
-    }else{ui.openLoginMenu();}
+        if(!systemPass.masterPasswordSetup(masterFile)){
+            std::cerr << "UNABLE TO SETUP MASTERFILE, DO YOU HAVE WRITE PERMSSIONS?" << std::endl;
+            return 1;
+        }
+
+        ui.masterPasswordSetupSuccess();
+    }
 
     //logging in 
+    ui.openLoginMenu();
     for(int i = 0; i <= maxLoginAttempts; i++){
         if(systemPass.masterPasswordLogin(masterFile)){break;}
         std::cout<< "Wrong Password! Attempts Left = [" <<

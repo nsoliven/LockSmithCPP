@@ -21,6 +21,7 @@ public:
     void openAddPasswordMenu();
     void openRemovePasswordMenu();
     void openEditPasswordMenu();
+    void masterPasswordSetupSuccess();
 };
 
 
