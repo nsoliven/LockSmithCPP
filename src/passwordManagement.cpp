@@ -21,9 +21,9 @@ Created in 2023 by NSOLIVEN
  * @param string dbFileName string
  */
 Database::Database(const std::string &dbFileName)
-: dbFileName(dbFileName) , newInstance(!checkIfDatabaseExists())
+: dbFileName(dbFileName) , newDatabase(!checkIfDatabaseExists())
 {
-    if(this->newInstance){
+    if(this->newDatabase){
         declareDatabase();
     }
 }
@@ -67,8 +67,8 @@ bool Database::checkIfDatabaseExists(){
  * 
  * @return true if new instance
  */
-bool Database::getIfNewInstance(){
-    return this->newInstance;
+bool Database::getIfNewDatabase(){
+    return this->newDatabase;
 }
 
 //-------------------------------
@@ -201,10 +201,16 @@ bool Database::listItems(std::vector<std::string> &item_names){
  * 
  * @return true if new instance
  */
-bool SystemPasswordManagement::isDatabaseNew(){
-    return db.getIfNewInstance();
+bool SystemPasswordManagement::getIfNewDatabase(){
+    return db.getIfNewDatabase();
 }
 
+
+bool SystemPasswordManagement::isMasterPasswordFileGood(const std::string& masterpasslocation){
+    std::ifstream file(masterpasslocation);
+    return file.good();
+
+}
 /**
  * @brief Used for grabbing password from user from console input
  *        Console input is hidden to prevent visual stealing of password with bool
@@ -320,9 +326,16 @@ std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
  */
 bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpasslocation){
 
+    if(isMasterPasswordFileGood(masterpasslocation)){
+        //if file good that means masterpasslocationfile existed already thus not new instance
+        std::cerr << "Error: MasterPassFile already exists, not new instance" << std::endl;
+        return false;
+    }
+
+    //create outfile
     std::ofstream outFile(masterpasslocation);
     if (!outFile) {
-        std::cerr << "Error: Unable to open file for writing.\n";
+        std::cerr << "Error: Unable to open file for writing. Did you give write permissions?" << std::endl;
         return false;
     }
     

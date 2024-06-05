@@ -41,18 +41,22 @@ int main(){
     UserInterface ui;
 
     //check if we are setting up database and masterpassword
-    if(systemPass.isDatabaseNew()){
+    if(systemPass.getIfNewDatabase()){
         ui.openNewInstanceMenu();
         if(!systemPass.masterPasswordSetup(masterFile)){
-            std::cerr << "UNABLE TO SETUP MASTERFILE, DO YOU HAVE WRITE PERMSSIONS?" << std::endl;
+            std::cerr << "UNABLE TO SETUP MASTERPASSWORD" << std::endl;
             return 1;
         }
-
         ui.masterPasswordSetupSuccess();
     }
 
     //logging in 
     ui.openLoginMenu();
+    if(!(systemPass.isMasterPasswordFileGood(masterFile))){
+        //if file good that means masterpasslocationfile existed already thus not new instance
+        std::cerr << "Error: MasterPassFile does not exist. Is your filesystem corrupt?" << std::endl;
+        return 1;
+    }
     for(int i = 0; i <= maxLoginAttempts; i++){
         if(systemPass.masterPasswordLogin(masterFile)){break;}
         std::cout<< "Wrong Password! Attempts Left = [" <<

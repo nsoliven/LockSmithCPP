@@ -33,14 +33,14 @@ Created in 2023 by NSOLIVEN
 class Database{
 private:
     std::string dbFileName;
-    bool newInstance;
+    bool newDatabase;
     bool declareDatabase();
 public:
     // define the database functions
     // declare database
     Database(const std::string &dbFileName);
     bool checkIfDatabaseExists();
-    bool getIfNewInstance();
+    bool getIfNewDatabase();
     bool addItem(const std::string &pass_name, const std::string &username, const std::string &password);
     bool removeItem(const std::string &pass_name);
     bool getItem(const std::string &pass_name,std::string &username,std::string &password);
@@ -64,7 +64,8 @@ public:
     SystemPasswordManagement(const std::string& dbFileName);
     bool masterPasswordSetup(const std::string& masterpasslocation);
     bool masterPasswordLogin(const std::string& masterpasslocation);
-    bool isDatabaseNew();
+    bool isMasterPasswordFileGood(const std::string& masterpasslocation);
+    bool getIfNewDatabase();
     std::string getPasswordFromUser(const int &type,const bool &hidden);
     std::string getStringFromUser(const int &type);
     bool addPassword();
