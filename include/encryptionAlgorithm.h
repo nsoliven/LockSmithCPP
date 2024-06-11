@@ -22,10 +22,11 @@ Complete WIP!
 class Encryption {
 public:
     // Define the AES encryption and decryption functions
-    std::string aes_encrypt(std::string plaintext, std::string key);
-    std::string aes_decrypt(std::string ciphertext, std::string key);
+    std::string aes_encrypt(const std::string plainText, const std::string key);
+    std::string aes_decrypt(const std::string cipherText, const std::string key);
+    std::string deriveKey(const std::string masterPassword);
 
-
+    
     // Define the key generation function
     std::string generateKey(int length);
     

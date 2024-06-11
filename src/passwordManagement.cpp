@@ -63,9 +63,9 @@ bool Database::checkIfDatabaseExists(){
 
 
 /**
- * @brief getter for newInstance
+ * @brief getter for if newDatabase
  * 
- * @return true if new instance
+ * @return true if newDatabase
  */
 bool Database::getIfNewDatabase(){
     return this->newDatabase;
