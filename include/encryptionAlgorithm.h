@@ -27,9 +27,6 @@ public:
     std::string deriveKey(const std::string masterPassword);
 
     
-    // Define the key generation function
-    std::string generateKey(int length);
-    
 };
 
 #endif
