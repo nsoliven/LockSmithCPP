@@ -20,7 +20,6 @@ Created in 2023 by NSOLIVEN
 */
 
 
-
 /**
  * @brief Using key, we will encrypt the text passed through and it will be hashed to be stored
  *  
@@ -29,7 +28,9 @@ Created in 2023 by NSOLIVEN
  * @return string of password encrypted item to store in database later on
  */
 std::string Encryption::aes_encrypt(const std::string plainText, const std::string key){
-
+    std::string encryptedStr;
+    
+    return encryptedStr;
 }
 
 /**
@@ -40,7 +41,8 @@ std::string Encryption::aes_encrypt(const std::string plainText, const std::stri
  * @return string of password unencrypted
  */
 std::string Encryption::aes_decrypt(const std::string cipherText, const std::string key){
-
+    std::string decryptedStr;
+    return decryptedStr;
 }
 
 /**
@@ -50,5 +52,6 @@ std::string Encryption::aes_decrypt(const std::string cipherText, const std::str
  * @return key derived from masterPassword
  */
 std::string Encryption::deriveKey(const std::string masterPassword){
-
+    std::string key;
+    return key;
 }
