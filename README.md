@@ -22,13 +22,14 @@ Windows:
 - Locate your Conan profile at C:\Users\zurzi\.conan2\profiles
   - Change compiler.cppstd to compiler.cppstd=20
 ```sh
-# Clone the repository
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
 conan install . --output-folder=build --build=missing 
 cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -S . -B build
 cmake --build build
-cd build
+
+#location may be different depending on how you build
+cd out/build/windows_release
 ./lockSmithAPP.exe
 ```
 
@@ -41,6 +42,8 @@ git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
 conan install . --output-folder=build --build=missing 
 cmake --build ./out/build/conan_release
+
+#location may be different depending on how you build
 cd ./out/build/conan_release
 ./lockSmithAPP
 ```
