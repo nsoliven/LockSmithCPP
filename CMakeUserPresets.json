@@ -8,12 +8,25 @@
           "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/build/conan_toolchain.cmake",
           "CMAKE_BUILD_TYPE": "Release"
         }
+      },
+      {
+        "name": "windows_release",
+        "hidden": false,
+        "cacheVariables": {
+          "CMAKE_GENERATOR": "Ninja",
+          "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/build/conan_toolchain.cmake",
+          "CMAKE_BUILD_TYPE": "Release"
+        }
       }
     ],
     "buildPresets": [
       {
         "name": "conan_build",
         "configurePreset": "conan_release"
+      },
+      {
+        "name": "windows_build",
+        "configurePreset": "windows_release"
       }
     ]
   }

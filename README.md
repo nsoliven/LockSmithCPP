@@ -19,10 +19,23 @@
 ## User Compilation and Building
 Windows:
 - Please have CMAKE & GIT & CONAN installed on your system for building
+- Locate your Conan profile at C:\Users\zurzi\.conan2\profiles
+  - Change compiler.cppstd to compiler.cppstd=20
+```sh
+# Clone the repository
+git clone https://github.com/nsoliven/LockSmithCPP
+cd LockSmithCPP
+conan install . --output-folder=build --build=missing 
+cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -S . -B build
+cmake --build build
+cd build
+./lockSmithAPP.exe
+```
 
 UNIX/LINUX Building:
 - Please have CMAKE & GIT & CONAN installed on your system for building
-- Version 20 C++ required
+- Locate your Conan profile: The default profile is usually located in ~/.conan/profiles/default.
+  - Change compiler.cppstd to compiler.cppstd=20
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
