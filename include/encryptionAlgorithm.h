@@ -8,6 +8,8 @@ Created in 2023 by NSOLIVEN
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
+#include <botan/hash.h>
+#include <botan/hex.h>
 #include <string>
 #include <iostream>
 

@@ -1,5 +1,5 @@
 [requires]
-botan/2.19.4
+botan/3.4.0
 sqlitecpp/3.3.1
 
 [generators]

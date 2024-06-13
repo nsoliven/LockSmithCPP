@@ -18,11 +18,11 @@
 
 ## User Compilation and Building
 Windows:
-- Please have CMAKE & GIT installed on your system for building
-- Windows must have dos2unix to convert SQLiteCPP, Windows simply use VSCODE's CMAKE instead.
+- Please have CMAKE & GIT & CONAN installed on your system for building
 
 UNIX/LINUX Building:
-- Please have CMAKE & GIT & GCC Compiler installed on your system for building
+- Please have CMAKE & GIT & CONAN installed on your system for building
+- Version 20 C++ required
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP

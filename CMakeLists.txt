@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project(LockSmith VERSION 0.1.3.0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(OPENSSL_USE_STATIC_LIBS TRUE)
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -20,7 +20,7 @@ set(lockSmithLibFiles
 
 # Create a static library
 add_library(lockSmithLib STATIC ${lockSmithLibFiles})
-target_link_libraries(lockSmithLib SQLiteCpp)
+target_link_libraries(lockSmithLib SQLiteCpp botan::botan SQLite::SQLite3)
 
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
