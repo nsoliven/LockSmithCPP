@@ -26,12 +26,9 @@ UNIX/LINUX Building:
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
-git submodule init
-git submodule update
-mkdir build
-cd build
-cmake ..
-cmake --build ./ --config Debug --target all 
+conan install . --output-folder=build --build=missing 
+cmake --build ./out/build/conan_release
+cd ./out/build/conan_release
 ./lockSmithAPP
 ```
 
