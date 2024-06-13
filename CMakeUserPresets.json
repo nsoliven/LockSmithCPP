@@ -1,0 +1,20 @@
+{
+    "version": 3,
+    "configurePresets": [
+      {
+        "name": "conan_release",
+        "hidden": false,
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/build/conan_toolchain.cmake",
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "conan_build",
+        "configurePreset": "conan_release"
+      }
+    ]
+  }
+  

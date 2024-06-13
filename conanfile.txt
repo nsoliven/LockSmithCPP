@@ -1,0 +1,7 @@
+[requires]
+botan/2.19.4
+sqlitecpp/3.3.1
+
+[generators]
+CMakeDeps
+CMakeToolchain
