@@ -8,6 +8,7 @@ Created in 2023 by NSOLIVEN
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
+#include <botan/kdf.h>
 #include <botan/hash.h>
 #include <botan/hex.h>
 #include <string>
@@ -22,13 +23,16 @@ Complete WIP!
 */
 
 class Encryption {
+private:
+    const size_t KDF_ITERATIONS = 60000;
 public:
     // Define the AES encryption and decryption functions
-    std::string aes_encrypt(const std::string plainText, const std::string key);
-    std::string aes_decrypt(const std::string cipherText, const std::string key);
-    std::string deriveKey(const std::string masterPassword);
+    std::string aes_encrypt(const std::string &plainText, const std::string &key);
+    std::string aes_decrypt(const std::string &cipherText, const std::string &key);
+    std::string deriveKey(const std::string &masterPassword);
+    std::string generateSalt(const int &saltLength);
+    std::string hashAndSalt(const std::string &strToHash, const std::string &salt);
 
-    
 };
 
 #endif
