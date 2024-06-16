@@ -57,6 +57,9 @@ std::string Encryption::deriveKey(const std::string &masterPassword){
 
 
 std::string Encryption::generateSalt(const int &saltLength){
+    std::string key;
+    return key;
+}
 
 
 /**
@@ -66,26 +69,22 @@ std::string Encryption::generateSalt(const int &saltLength){
  * @param string salt 
  * @return hashed string
  */
-}
-
 std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt) {
-    auto pbkdf_runtime = std::chrono::milliseconds(400);
     const size_t iterations = 100000; // Example iteration count, adjust based on your security needs
     const size_t key_length = 32; // Length of the derived key
-    const std::string pbkdf_algo = "Argon2i";
+    const std::string pbkdf_algo = "Argon2id";
 
-    auto pwd_fam = Botan::PasswordHashFamily::create_or_throw(pbkdf_algo);
+    auto pwd_fam = Botan::PasswordHashFamily::create(pbkdf_algo);
     if (!pwd_fam) {
         throw std::runtime_error("PasswordHashFamily creation failed");
     }
 
-    auto pwd_hash = pwd_fam->from_params(iterations);
+    auto pwd_hash = pwd_fam->from_iterations(iterations);
 
     std::vector<uint8_t> key(key_length);
     std::vector<uint8_t> salt_vec(salt.begin(), salt.end());
 
-    pwd_hash->hash(key, strToHash, salt_vec);
+    pwd_hash->derive_key(key.data(), key.size(), strToHash.data(), strToHash.size(), salt_vec.data(), salt_vec.size());
 
     return Botan::hex_encode(key.data(), key.size());
 }
-
