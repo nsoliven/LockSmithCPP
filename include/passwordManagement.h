@@ -13,6 +13,7 @@ Created in 2023 by NSOLIVEN
 
 
 #include "SQLiteCpp/SQLiteCpp.h"
+#include <encryptionAlgorithm.h>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -57,9 +58,11 @@ private:
     static constexpr int GET_REGULARPASSWORD = 0;
     static constexpr int MAX_PASSWORD_LENGTH = 255;
     static constexpr int MIN_MASTERPASS_LENGTH = 8;
-
     bool hasErrored = false;
+
     Database db;
+    Encryption enc;
+
     std::string masterPasswordHash;
 public:
     SystemPasswordManagement(const std::string& dbFileName);

@@ -7,6 +7,7 @@ Created in 2023 by NSOLIVEN
 */
 
 
+
 #include "encryptionAlgorithm.h"
 
 #include <string>
@@ -55,30 +56,40 @@ std::string Encryption::deriveKey(const std::string &masterPassword){
     return key;
 }
 
-
+/**
+ * @brief creates a randomly generated salt using BOTAN
+ *  
+ * @param string saltLength in BYTES
+ * @return salt after being hex encoded
+ */
 std::string Encryption::generateSalt(const int &saltLength){
-    std::string key;
-    return key;
+    Botan::AutoSeeded_RNG generator;
+    std::vector<uint8_t> salt(saltLength);
+    generator.randomize(salt.data(), salt.size());
+    return Botan::hex_encode(salt.data(), salt.size()); 
 }
 
 
 /**
- * @brief returns a hashed string after passing a salt and str to hash
+ * @brief returns a hashed string after passing a salt and str to hash. uses ARGON2
  *  
  * @param string string to hash
  * @param string salt 
  * @return hashed string
  */
 std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt) {
-    const size_t iterations = 100000; // Example iteration count, adjust based on your security needs
-    const size_t key_length = 32; // Length of the derived key
+    const size_t iterations = 600000; // 600,000 is typically a safe amount, can raise for more security 
+    const size_t key_length = 32; // Length of the derived key, 32 is considered secure for Argon2
     const std::string pbkdf_algo = "Argon2id";
 
+
+    //create botan pwd fam. creates a unique ptr
     auto pwd_fam = Botan::PasswordHashFamily::create(pbkdf_algo);
     if (!pwd_fam) {
         throw std::runtime_error("PasswordHashFamily creation failed");
     }
 
+    //create hash 
     auto pwd_hash = pwd_fam->from_iterations(iterations);
 
     std::vector<uint8_t> key(key_length);

@@ -9,7 +9,8 @@ Created in 2023 by NSOLIVEN
 #define ENCRYPTION_H
 
 #include <botan/pwdhash.h>
-#include <botan/system_rng.h>
+#include <botan/auto_rng.h>
+#include <botan/rng.h>
 #include <botan/hash.h>
 #include <botan/hex.h>
 #include <string>

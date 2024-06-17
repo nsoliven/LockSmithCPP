@@ -184,7 +184,6 @@ bool Database::listItems(std::vector<std::string> &item_names){
         SQLite::Database db(this->dbFileName, SQLite::OPEN_READONLY);
         std::string sql = "SELECT password_name FROM locksmithData";
         SQLite::Statement stmt(db, sql);
-
         while (stmt.executeStep()) {
             item_names.push_back(stmt.getColumn(0).getString());
         }
