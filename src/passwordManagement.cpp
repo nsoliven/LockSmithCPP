@@ -258,9 +258,14 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
     std::string password = "";
     std::getline(std::cin, password);
 
+
     if(password.length() < 1 || password.length() > MAX_PASSWORD_LENGTH){
         std::cerr << "BAD LENGTH, 1 <= PASSWORD <= "<< MAX_PASSWORD_LENGTH << std::endl;
         continue;
+    }
+
+    if (!password.empty() && password.back() == '\n') { 
+        password.pop_back();
     }
 
     if (hidden) {
@@ -339,6 +344,7 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         return false;
     }
     
+    //setup part of masterPassword
     bool masterPasswordStillSettingUp = true;
     while(masterPasswordStillSettingUp){
         std::string password = ""; // example password
@@ -354,8 +360,32 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         std::cout << "Please enter your password again to confirm" << std::endl;
         passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
 
-
         if(passwordConfirmation==password){
+            // Iteration Input with Maximum and Buffer Clearing
+            std::cout << "\nEnter desired password hashing iterations (100,000 - " << MAX_ITERATIONS << "):\n";
+            std::cout << "(Press Enter for the default of ("<< DEFAULT_ITERATIONS <<")\n";
+            std::cout << "(More iterations make your password more secure, but will take longer to process)\n";
+
+            std::string iterationInput;
+            std::getline(std::cin, iterationInput);
+
+            size_t iterations = DEFAULT_ITERATIONS;
+            if (!iterationInput.empty()) {
+                try{
+                    iterations = std::stoi(iterationInput);
+                }catch(const std::invalid_argument& e) {
+                    std::cerr << "Invalid input. Using default iterations.\n";
+                }catch(const std::out_of_range& e) {
+                    std::cerr << "Value outside allowed range. Using default iterations.\n";
+                }
+            }
+
+            std::string salt = enc.generateSalt(16);
+            try{
+                std::string hashedMasterPassword = enc.hashAndSalt(password, salt, iterations);
+            }catch(std::runtime_error& e){
+                std::cerr << e.what();
+            }
             outFile << password << std::endl;
             masterPasswordStillSettingUp = false;
         }else{

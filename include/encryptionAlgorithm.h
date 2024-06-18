@@ -26,6 +26,9 @@ Complete WIP!
 
 class Encryption {
 private:
+    static constexpr size_t DEFAULT_ITERATIONS = 600000;
+    static constexpr size_t MIN_ITERATIONS = 100000;
+    static constexpr size_t MAX_ITERATIONS = 5000000;
 public:
     // Define the AES encryption and decryption functions
     std::string aes_encrypt(const std::string &plainText, const std::string &key);

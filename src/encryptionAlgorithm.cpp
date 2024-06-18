@@ -78,10 +78,14 @@ std::string Encryption::generateSalt(const int &saltLength){
  * @param size_t iterations, default 600,000 is secure.
  * @return hashed string consisting of 64 hex digits (32 bytes)
  */
-std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations = 600000) {
+std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations = DEFAULT_ITERATIONS) {
 
-    if(iterations<100000){
-        throw std::runtime_error("Input of less than 100,000 iterations is not recommended for security");
+    if(iterations<MIN_ITERATIONS){
+        throw std::runtime_error("Input of less than " + std::to_string(MIN_ITERATIONS) + " iterations is not recommended for security");
+    }
+
+    if(iterations>MAX_ITERATIONS){
+        throw std::runtime_error("Input of more than " + std::to_string(MAX_ITERATIONS) + " iterations is not recommended");
     }
     
     const size_t key_length = 32; // Length of the derived key, 32 is considered secure for Argon2

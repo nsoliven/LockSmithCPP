@@ -58,11 +58,18 @@ private:
     static constexpr int GET_REGULARPASSWORD = 0;
     static constexpr int MAX_PASSWORD_LENGTH = 255;
     static constexpr int MIN_MASTERPASS_LENGTH = 8;
+
+    static constexpr int SALT_LENGTH = 16;
+    static constexpr int HASH_LENGTH = 32;
+
+    static constexpr size_t DEFAULT_ITERATIONS = 600000;
+    static constexpr size_t MIN_ITERATIONS = 100000;
+    static constexpr size_t MAX_ITERATIONS = 5000000;
+
     bool hasErrored = false;
 
     Database db;
     Encryption enc;
-
     std::string masterPasswordHash;
 public:
     SystemPasswordManagement(const std::string& dbFileName);
