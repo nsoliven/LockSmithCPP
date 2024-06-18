@@ -71,14 +71,19 @@ std::string Encryption::generateSalt(const int &saltLength){
 
 
 /**
- * @brief returns a hashed string after passing a salt and str to hash. uses ARGON2
+ * @brief Generates a 32 byte hash off and returns a string.
  *  
  * @param string string to hash
  * @param string salt 
- * @return hashed string
+ * @param size_t iterations, default 600,000 is secure.
+ * @return hashed string consisting of 64 hex digits (32 bytes)
  */
-std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt) {
-    const size_t iterations = 600000; // 600,000 is typically a safe amount, can raise for more security 
+std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations = 600000) {
+
+    if(iterations<100000){
+        throw std::runtime_error("Input of less than 100,000 iterations is not recommended for security");
+    }
+    
     const size_t key_length = 32; // Length of the derived key, 32 is considered secure for Argon2
     const std::string pbkdf_algo = "Argon2id";
 
