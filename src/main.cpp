@@ -39,11 +39,6 @@ int main(){
     //setup the main program with object's constructor
     SystemPasswordManagement systemPass(dbName);
     UserInterface ui;
-    Encryption enc;
-
-    std::cout << enc.hashAndSalt("HASHTHIS", "712CBBB949647BB01B90473B9FBB6FA789072429927A0EF0ED707F6E93659C5B") << std::endl;
-    std::cout << enc.generateSalt(32);
-    return 0;
 
     //check if we are setting up database and masterpassword
     if(systemPass.getIfNewDatabase()){
