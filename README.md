@@ -47,7 +47,7 @@ cd ./out/build/windows_release
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
-conan install . --output-folder=build --build=missing --settings=build_type=Debug # change to 'Release' for release mode
+conan install . --output-folder=build --build=missing --settings=build_type=Release --settings=compiler.cppstd=20 # change to 'Release' for release mode
 cmake --build ./out/build/conan_release
 #location may be different depending on how you build
 cd ./out/build/conan_release

@@ -68,6 +68,7 @@ int main(){
 
 
     //now logged in, OPEN MAIN MENU PAGE
+    int result = 0;
     while(true){
         ui.openMainMenu();
         std::string userIn;
@@ -108,8 +109,12 @@ int main(){
                     std::system("cls");
                     std::system("cls");
                 #else
-                    std::system("clear");
-                    std::system("clear");
+                    result = std::system("clear");
+                    result = std::system("clear");
+                    if (result != 0) {
+                        std::cerr << "Error clearing the screen: " << result << std::endl;
+                        // Handle the error (e.g., log it, retry, exit)
+                    }
                 #endif
                 std::cout << "--------------------------" << std::endl;
                 std::cout << "Console Cleared. Thank you for using LockSmith by NSOLIVEN, Exiting the program" << std::endl;

@@ -21,8 +21,8 @@
     ],
     "buildPresets": [
       {
-        "name": "conan_build",
-        "configurePreset": "conan_release"
+        "name": "unix_build",
+        "configurePreset": "unix_release"
       },
       {
         "name": "windows_build",
