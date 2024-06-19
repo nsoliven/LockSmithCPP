@@ -403,9 +403,11 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
                 iterations = DEFAULT_ITERATIONS; // replace with default iteration
             }
         }
+        std::string salt2 = enc.generateSalt(16); // generate a second salt for AES256_ENCRYPT!
         outFile << hashedMasterPassword << ':'
                 << salt << ':'
-                << iterations;
+                << iterations << ':'
+                << salt2;
         outFile.close();
         masterPasswordStillSettingUp = false;
     }
@@ -413,7 +415,7 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
 }
 
 /**
- * @brief PasswordManagerPrompts a login [UNSECURE]
+ * @brief PasswordManagerPrompts a login. Will also derive key for encryption algorithm
  *  
  * @return Bool if success
  */
@@ -435,19 +437,22 @@ bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpass
         tokens.push_back(token);
     }
 
-    if (tokens.size() != 3) {
-        std::cerr << "Error: Invalid format in file. Expected hash:salt:iterations\n";
+    if (tokens.size() != 4) {
+        std::cerr << "Error: Invalid format in masterFile. Your FileSystemIsCorrupt\n";
         return false;
     }
 
     std::string fileHash = tokens[0];
     std::string fileSalt = tokens[1];
     std::string iterations = tokens[2];
+    std::string secondaryFileSalt = tokens[3];
 
     std::string userInput = getPasswordFromUser(1, true);
     std::string userHashed = enc.hashAndSalt(userInput, fileSalt, stoi(iterations));
-    enc.secureEnoughMemoryDelete(userInput);
-    if(fileHash==userHashed){return true;}
+    if(fileHash==userHashed){
+        enc.deriveKey(userInput,secondaryFileSalt); // DERIVE THE KEYS ONCE LOGGED IN 
+        return true;
+    }
     return false;
 }
 

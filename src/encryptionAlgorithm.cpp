@@ -22,17 +22,32 @@ Created in 2023 by NSOLIVEN
 
 /**
  * @brief Using key, we will encrypt the text passed through and it will be hashed to be stored
+ * 
+ * NOTE: AUTOMATICALLY DESTROYS PLAINTEXT DURING CALL
  *  
  * @param string plainText to be encrypted
  * @param string key to use to encrypt
  * @return string of password encrypted item to store in database later on
  */
-std::string Encryption::aes_encrypt(const std::string &plainText, const std::string &key){
-    std::string encryptedStr;
+std::string Encryption::encrypt(std::string &plainText, const std::string &key){
+    std::vector<uint8_t> key_vec(key.begin(), key.end());
+    std::vector<uint8_t> plain_vec(plainText.begin(), plainText.end());
     
-    return encryptedStr;
-}
+    secureEnoughMemoryDelete(plainText);
 
+    Botan::AutoSeeded_RNG rng;
+    Botan::secure_vector<uint8_t> iv = rng.random_vec(16);
+    
+    auto encryptor = Botan::Cipher_Mode::create("AES-256/GCM", Botan::Cipher_Dir::Encryption);
+    encryptor->set_key(key_vec);
+    encryptor->start(iv);
+    encryptor->finish(plain_vec);
+
+    std::vector<uint8_t> cipher_text(iv.begin(), iv.end());
+    cipher_text.insert(cipher_text.end(), plain_vec.begin(), plain_vec.end());
+
+    return Botan::hex_encode(cipher_text);
+}
 /**
  * @brief Using key, decrypt cipherText
  *  
@@ -40,20 +55,35 @@ std::string Encryption::aes_encrypt(const std::string &plainText, const std::str
  * @param string key
  * @return string of password unencrypted
  */
-std::string Encryption::aes_decrypt(const std::string &cipherText, const std::string &key){
-    std::string decryptedStr;
-    return decryptedStr;
-}
+std::string Encryption::decrypt(const std::string &cipherText, const std::string &key){
+    Botan::secure_vector<uint8_t> cipher_vec = Botan::hex_decode_locked(cipherText);
+    
+    Botan::secure_vector<uint8_t> iv(cipher_vec.begin(), cipher_vec.begin() + 16);
+    Botan::secure_vector<uint8_t> enc_text(cipher_vec.begin() + 16, cipher_vec.end());
+    
+    Botan::secure_vector<uint8_t> key_vec(key.begin(), key.end());
 
+    auto decryptor = Botan::Cipher_Mode::create("AES-256/GCM", Botan::Cipher_Dir::Decryption);
+    decryptor->set_key(key_vec);
+    decryptor->start(iv);
+    
+    decryptor->finish(enc_text);
+    return std::string(enc_text.begin(), enc_text.end());
+}
 /**
  * @brief Create and return a key based from masterPassword string passed through
  *  
+ * NOTE: AUTOMATICALLY DESTROYS PASSWORD PASSED THROUGH
+ * 
  * @param string masterPassword
  * @return key derived from masterPassword
  */
-std::string Encryption::deriveKey(const std::string &masterPassword){
-    std::string key;
-    return key;
+void Encryption::deriveKey(std::string &masterPassword,std::string &decryptEncryptSalt){
+    std::string key = hashAndSalt(masterPassword,decryptEncryptSalt,600000,16);
+    keyFromMaster.assign(key.begin(), key.end());
+    this->decryptEncryptSalt = decryptEncryptSalt;
+    keysInitialized = true;
+    secureEnoughMemoryDelete(masterPassword);
 }
 
 /**
@@ -71,14 +101,15 @@ std::string Encryption::generateSalt(const int &saltLength){
 
 
 /**
- * @brief Generates a 32 byte hash off and returns a string.
+ * @brief Generates a hash and returns a string.
  *  
  * @param string string to hash
  * @param string salt 
  * @param size_t iterations, default 600,000 is secure.
+ * @param size_t keylength in bytes
  * @return hashed string consisting of 64 hex digits (32 bytes)
  */
-std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations = DEFAULT_ITERATIONS) {
+std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations, const size_t keyLength) {
 
     if(iterations<MIN_ITERATIONS){
         throw std::runtime_error("Input of less than " + std::to_string(MIN_ITERATIONS) + " iterations is not recommended for security\n");
@@ -88,7 +119,6 @@ std::string Encryption::hashAndSalt(const std::string &strToHash, const std::str
         throw std::runtime_error("Input of more than " + std::to_string(MAX_ITERATIONS) + " iterations is not recommended\n");
     }
     
-    const size_t key_length = 32; // Length of the derived key, 32 is considered secure for Argon2
     const std::string pbkdf_algo = "Argon2id";
 
 
@@ -101,8 +131,8 @@ std::string Encryption::hashAndSalt(const std::string &strToHash, const std::str
     //create hash 
     auto pwd_hash = pwd_fam->from_iterations(iterations);
 
-    std::vector<uint8_t> key(key_length);
-    std::vector<uint8_t> salt_vec(salt.begin(), salt.end());
+    Botan::secure_vector<uint8_t> key(keyLength);
+    Botan::secure_vector<uint8_t> salt_vec(salt.begin(), salt.end());
 
     pwd_hash->derive_key(key.data(), key.size(), strToHash.data(), strToHash.size(), salt_vec.data(), salt_vec.size());
 
@@ -134,4 +164,8 @@ void Encryption::secureEnoughMemoryDelete(std::string &str){
     // Force a read (to discourage optimization) 
     volatile char &dummy = str[0]; // Use a volatile reference to str
     (void)dummy; // Avoid "unused variable" warnings
+}
+
+
+void setKey(std::string &key){
 }
