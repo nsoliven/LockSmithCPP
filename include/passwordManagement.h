@@ -77,12 +77,15 @@ public:
     bool masterPasswordLogin(const std::string& masterpasslocation);
     bool isMasterPasswordFileGood(const std::string& masterpasslocation);
     bool getIfNewDatabase();
-    std::string getPasswordFromUser(const int &type,const bool &hidden);
+    Botan::secure_vector<char> getPasswordFromUser(const int &type,const bool &hidden);
     std::string getStringFromUser(const int &type);
     bool addPassword();
     bool removePassword();
     bool viewPassword();
     bool listAllPasswords();
+
+    bool printSecureVector(Botan::secure_vector<char> secure_vector);
+    
 };
 
 

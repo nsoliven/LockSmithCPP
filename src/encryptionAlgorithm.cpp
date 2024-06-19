@@ -29,11 +29,10 @@ Created in 2023 by NSOLIVEN
  * @param string key to use to encrypt
  * @return string of password encrypted item to store in database later on
  */
-std::string Encryption::encrypt(std::string &plainText, const std::string &key){
+std::string Encryption::encrypt(Botan::secure_vector<char> &plainText, Botan::secure_vector<char> &key){
     std::vector<uint8_t> key_vec(key.begin(), key.end());
     std::vector<uint8_t> plain_vec(plainText.begin(), plainText.end());
     
-    secureEnoughMemoryDelete(plainText);
 
     Botan::AutoSeeded_RNG rng;
     Botan::secure_vector<uint8_t> iv = rng.random_vec(16);
@@ -48,6 +47,10 @@ std::string Encryption::encrypt(std::string &plainText, const std::string &key){
 
     return Botan::hex_encode(cipher_text);
 }
+
+std::string Encryption::encrypt(Botan::secure_vector<char> &plainText){
+    return encrypt(plainText, keyFromMaster);
+}
 /**
  * @brief Using key, decrypt cipherText
  *  
@@ -55,12 +58,16 @@ std::string Encryption::encrypt(std::string &plainText, const std::string &key){
  * @param string key
  * @return string of password unencrypted
  */
-std::string Encryption::decrypt(const std::string &cipherText, const std::string &key){
+Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText, Botan::secure_vector<char> &key){
     Botan::secure_vector<uint8_t> cipher_vec = Botan::hex_decode_locked(cipherText);
     
     Botan::secure_vector<uint8_t> iv(cipher_vec.begin(), cipher_vec.begin() + 16);
     Botan::secure_vector<uint8_t> enc_text(cipher_vec.begin() + 16, cipher_vec.end());
-    
+
+    if (cipher_vec.size() < 16) {
+        throw std::runtime_error("Ciphertext is too short");
+    }
+
     Botan::secure_vector<uint8_t> key_vec(key.begin(), key.end());
 
     auto decryptor = Botan::Cipher_Mode::create("AES-256/GCM", Botan::Cipher_Dir::Decryption);
@@ -68,22 +75,24 @@ std::string Encryption::decrypt(const std::string &cipherText, const std::string
     decryptor->start(iv);
     
     decryptor->finish(enc_text);
-    return std::string(enc_text.begin(), enc_text.end());
+    return Botan::secure_vector<char> (enc_text.begin(), enc_text.end());
+}
+
+Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText){
+    return decrypt(cipherText, keyFromMaster);
 }
 /**
  * @brief Create and return a key based from masterPassword string passed through
  *  
- * NOTE: AUTOMATICALLY DESTROYS PASSWORD PASSED THROUGH
  * 
- * @param string masterPassword
+ * @param secure_vector masterPassword
  * @return key derived from masterPassword
  */
-void Encryption::deriveKey(std::string &masterPassword,std::string &decryptEncryptSalt){
+void Encryption::deriveKey(Botan::secure_vector<char> &masterPassword,std::string &decryptEncryptSalt){
     std::string key = hashAndSalt(masterPassword,decryptEncryptSalt,600000,16);
     keyFromMaster.assign(key.begin(), key.end());
     this->decryptEncryptSalt = decryptEncryptSalt;
     keysInitialized = true;
-    secureEnoughMemoryDelete(masterPassword);
 }
 
 /**
@@ -103,13 +112,13 @@ std::string Encryption::generateSalt(const int &saltLength){
 /**
  * @brief Generates a hash and returns a string.
  *  
- * @param string string to hash
+ * @param secure_vector botan's secure vector
  * @param string salt 
  * @param size_t iterations, default 600,000 is secure.
  * @param size_t keylength in bytes
  * @return hashed string consisting of 64 hex digits (32 bytes)
  */
-std::string Encryption::hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations, const size_t keyLength) {
+std::string Encryption::hashAndSalt(Botan::secure_vector<char> &strToHash, const std::string &salt, const size_t iterations, const size_t keyLength) {
 
     if(iterations<MIN_ITERATIONS){
         throw std::runtime_error("Input of less than " + std::to_string(MIN_ITERATIONS) + " iterations is not recommended for security\n");
@@ -120,7 +129,6 @@ std::string Encryption::hashAndSalt(const std::string &strToHash, const std::str
     }
     
     const std::string pbkdf_algo = "Argon2id";
-
 
     //create botan pwd fam. creates a unique ptr
     auto pwd_fam = Botan::PasswordHashFamily::create(pbkdf_algo);
@@ -167,5 +175,6 @@ void Encryption::secureEnoughMemoryDelete(std::string &str){
 }
 
 
-void setKey(std::string &key){
+std::string Encryption::getDecryptEncryptSalt(){
+    return this->decryptEncryptSalt;
 }

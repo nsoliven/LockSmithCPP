@@ -222,7 +222,7 @@ bool SystemPasswordManagement::isMasterPasswordFileGood(const std::string& maste
  * @param hidden bool if to hide data or not, default true
  * @return string of password grabbed
  */
-std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, const bool &hidden = true){
+Botan::secure_vector<char> SystemPasswordManagement::getPasswordFromUser(const int &type=1, const bool &hidden = true){
     while(true){
         switch(type){
         case 0:
@@ -237,7 +237,6 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
             break;
         default:
             std::cerr << "SystemPasswordManagement invalid type: " << type << std::endl;
-            return "!errored!";
             break;
         }
         
@@ -257,17 +256,19 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
         #endif
     }
 
-    std::string password = "";
-    std::getline(std::cin, password);
+    Botan::secure_vector<char> secure_password;
+    char ch;
+    while (std::cin.get(ch) && ch != '\n') {
+        secure_password.push_back(ch);
+    }
 
-
-    if(password.length() < 1 || password.length() > MAX_PASSWORD_LENGTH){
+    if(secure_password.size() < 1 || secure_password.size() > MAX_PASSWORD_LENGTH){
         std::cerr << "BAD LENGTH, 1 <= PASSWORD <= "<< MAX_PASSWORD_LENGTH << std::endl;
         continue;
     }
 
-    if (!password.empty() && password.back() == '\n') { 
-        password.pop_back();
+    if (!secure_password.empty() && secure_password.back() == '\n') { 
+        secure_password.pop_back();
     }
 
     if (hidden) {
@@ -284,7 +285,8 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
         #endif
         std::cout << std::endl;
     }
-    return password;
+
+    return secure_password;
     }
 
 }
@@ -349,28 +351,21 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
     //setup part of masterPassword
     bool masterPasswordStillSettingUp = true;
     while(masterPasswordStillSettingUp){
-        std::string password = ""; // example password
-        std::string passwordConfirmation = ""; //confirm for later
+        Botan::secure_vector<char> password = getPasswordFromUser(GET_MASTERPASSWORD,true);
 
-        password = getPasswordFromUser(GET_MASTERPASSWORD,true);
-
-        if(password.length() < MIN_MASTERPASS_LENGTH){
+        if(password.size() < MIN_MASTERPASS_LENGTH){
             std::cout << "We recommend that you create a password longer than " <<
             MIN_MASTERPASS_LENGTH << " Please re-enter a different password" << std::endl;
             continue;
         }
 
         std::cout << "Please enter your password again to confirm" << std::endl;
-        passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
+        Botan::secure_vector<char>  passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
 
         if(passwordConfirmation!=password){
-            enc.secureEnoughMemoryDelete(password);
-            enc.secureEnoughMemoryDelete(passwordConfirmation);
             std::cout << "Passwords did not match.. restarting setup" << std::endl << std::endl ;
             continue;
         }
-
-        enc.secureEnoughMemoryDelete(passwordConfirmation); // delete asap after no use
         // if passwords match then get iterations and hash and store.
         std::cout << "\nEnter desired password hashing iterations (100,000 - " << MAX_ITERATIONS << "):\n";
         std::cout << "(Press Enter for the default of ("<< DEFAULT_ITERATIONS <<")\n";
@@ -396,7 +391,6 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         while(hashing){
             try{
                 hashedMasterPassword = enc.hashAndSalt(password, salt, iterations);
-                enc.secureEnoughMemoryDelete(password); // delete after hash is created
                 hashing = false;
             }catch(std::runtime_error& e){
                 std::cerr << e.what() << "Using default iterations instead." << std::endl;
@@ -447,7 +441,7 @@ bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpass
     std::string iterations = tokens[2];
     std::string secondaryFileSalt = tokens[3];
 
-    std::string userInput = getPasswordFromUser(1, true);
+    Botan::secure_vector<char> userInput = getPasswordFromUser(1, true);
     std::string userHashed = enc.hashAndSalt(userInput, fileSalt, stoi(iterations));
     if(fileHash==userHashed){
         enc.deriveKey(userInput,secondaryFileSalt); // DERIVE THE KEYS ONCE LOGGED IN 
@@ -466,11 +460,14 @@ bool SystemPasswordManagement::addPassword(){
     try{
         std::string passwordName = getStringFromUser(GET_PASSWORD_NAME);
         std::string emailUsername = getStringFromUser(GET_EMAIL_USERNAME);
-        std::string password = getPasswordFromUser(GET_REGULARPASSWORD,true);
-        if(!db.addItem(passwordName,emailUsername,password)){
+        Botan::secure_vector<char> password = getPasswordFromUser(GET_REGULARPASSWORD,true);
+        std::string passwordHash = enc.encrypt(password);
+        password.clear(); // reduce time in memory
+
+
+        if(!db.addItem(passwordName,emailUsername,passwordHash)){
             return false;
         }
-        enc.secureEnoughMemoryDelete(password);
     }catch(const std::invalid_argument& e){
         std::cout << e.what();
         return false;
@@ -507,7 +504,8 @@ bool SystemPasswordManagement::removePassword(){
 bool SystemPasswordManagement::viewPassword(){
     std::string passwordName = "";
     std::string emailUsername = "";
-    std::string password = "";
+    std::string passwordEncrypted = "";
+
 
     try{
         passwordName = getStringFromUser(GET_PASSWORD_NAME);
@@ -517,16 +515,19 @@ bool SystemPasswordManagement::viewPassword(){
     }
 
     //if errored exit function false
-    if(!db.getItem(passwordName,emailUsername,password)){
+    if(!db.getItem(passwordName,emailUsername,passwordEncrypted)){
         return false;
     }
+
+    Botan::secure_vector<char> passwordDecrypted = enc.decrypt(passwordEncrypted);
     std::cout << "Password Details:\n"
         << "--------------------------\n"
         << "Password Name: " << passwordName << "\n"
         << "Email/Username: " << emailUsername << "\n"
-        << "Password: " << password << "\n"
-        << "--------------------------\n";
-    enc.secureEnoughMemoryDelete(password);
+        << "Password: ";  
+        printSecureVector(passwordDecrypted);
+        passwordDecrypted.clear(); // clear asap right after printing from memory
+    std::cout << "\n" << "--------------------------\n";
     return true;
 }
 
@@ -545,15 +546,31 @@ bool SystemPasswordManagement::listAllPasswords(){
               << "--------------------------\n";
     for (unsigned int i = 0; i < pass_names_list.size(); ++i) {
         const std::string &passwordName = pass_names_list[i];
-        std::string emailUsername, password;
-        if (db.getItem(passwordName, emailUsername, password)) {
-            std::cout << "Password Name: " << passwordName << "\n"
-                      << "Email/Username: " << emailUsername << "\n"
-                      << "Password: " << password << "\n";
-            std::cout << "--------------------------\n";
+        std::string emailUsername, passwordEncrypted;
+        if (db.getItem(passwordName, emailUsername, passwordEncrypted)) {
+            Botan::secure_vector<char> passwordDecrypted = enc.decrypt(passwordEncrypted);
+            std::cout << "Password Details:\n"
+            << "--------------------------\n"
+            << "Password Name: " << passwordName << "\n"
+            << "Email/Username: " << emailUsername << "\n"
+            << "Password: ";  
+            printSecureVector(passwordDecrypted);
+            passwordDecrypted.clear(); // clear asap right after printing from memory
+            std::cout << "\n" << "--------------------------\n";
         } else {
             std::cerr << "Error retrieving details for password: " << passwordName << "\n";
         }
     }
+    return true;
+}
+
+
+bool SystemPasswordManagement::printSecureVector(Botan::secure_vector<char> secure_vector){
+    for (char ch : secure_vector) {
+            std::cout << ch;
+            if(std::cout.fail()){
+                return false;
+            }
+        }
     return true;
 }

@@ -32,17 +32,23 @@ private:
     static constexpr size_t DEFAULT_ITERATIONS = 600000;
     static constexpr size_t MIN_ITERATIONS = 100000;
     static constexpr size_t MAX_ITERATIONS = 5000000;
-    Botan::secure_vector<uint8_t> keyFromMaster;
+    Botan::secure_vector<char> keyFromMaster;
     std::string decryptEncryptSalt;
     bool keysInitialized = false;
 public:
     // Define the encryption and decryption functions
-    std::string encrypt(std::string &plainText, const std::string &key);
-    std::string decrypt(const std::string &cipherText, const std::string &key);
-    void deriveKey(std::string &masterPassword,std::string &decryptEncryptSalt);
+    std::string encrypt(Botan::secure_vector<char> &plainText, Botan::secure_vector<char> &key);
+    std::string encrypt(Botan::secure_vector<char> &plainText);
+
+    Botan::secure_vector<char> decrypt(const std::string &cipherText, Botan::secure_vector<char> &key);
+    Botan::secure_vector<char> decrypt(const std::string &cipherText);
+
+    void deriveKey(Botan::secure_vector<char> &masterPassword,std::string &decryptEncryptSalt);
     std::string generateSalt(const int &saltLength);
-    std::string hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations = DEFAULT_ITERATIONS, const size_t keyLength = 32);
+    std::string hashAndSalt(Botan::secure_vector<char> &strToHash, const std::string &salt, const size_t iterations = DEFAULT_ITERATIONS, const size_t keyLength = 32);
     void secureEnoughMemoryDelete(std::string &str);
+
+    std::string getDecryptEncryptSalt();
 };
 
 class SecureString {

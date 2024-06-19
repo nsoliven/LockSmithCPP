@@ -87,10 +87,11 @@ int main(){
                     std::cout << std::endl << "List all password fail, restarting options" << std::endl;
                     continue;
                 }
+                std::cout << std::endl << "View all database password(s) success! Showing options....." << std::endl;
                 break;
             case 3: //VIEW A PASSWORD
                 if(!systemPass.viewPassword()){
-                    std::cout << "View password fail, restarting options" << std::endl;
+                    std::cout << std::endl << "View password fail, restarting options" << std::endl;
                     continue;
                 }
                 std::cout << std::endl << "View database password success! Showing options....." << std::endl;
