@@ -240,6 +240,7 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
             return "!errored!";
             break;
         }
+        
     //used for hiding the user input
     if (hidden) {
         #ifdef _WIN32
@@ -255,6 +256,7 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         #endif
     }
+    
     std::string password = "";
     std::getline(std::cin, password);
 

@@ -108,3 +108,30 @@ std::string Encryption::hashAndSalt(const std::string &strToHash, const std::str
 
     return Botan::hex_encode(key.data(), key.size());
 }
+
+/**
+ * @brief The function effectively overwrites the sensitive string data in memory with random bytes. 
+ *        This makes it significantly more difficult for an attacker to recover the original password if they gain access to the system's memory.
+ * 
+ * NOTE: this is not meant to be 100% secure as there are other neuances to memory attacks. 
+ *       these memory attacks are out of scope for the security of this project.
+ * 
+ *       Some sophisticated techniques could potentially recover data even after it's overwritten.
+ *       However, such attacks will be complex and often require significant resources and access to the target system.
+ * 
+ * @param string string to be replaced just in case of a memory hack
+ * @return none
+ */
+void Encryption::secureEnoughMemoryDelete(std::string &str){
+    Botan::AutoSeeded_RNG rng; // Create an RNG
+    size_t length = str.size(); // Determine the length of the string
+    Botan::secure_vector<uint8_t> random_bytes = rng.random_vec(length); // Generate random bytes
+
+    for (size_t i = 0; i < length; ++i) {
+        str[i] = static_cast<char>(random_bytes[i]); 
+    }
+
+    // Force a read (to discourage optimization) 
+    volatile char &dummy = str[0]; // Use a volatile reference to str
+    (void)dummy; // Avoid "unused variable" warnings
+}
