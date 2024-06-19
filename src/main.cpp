@@ -103,7 +103,14 @@ int main(){
                 std::cout << std::endl << "Remove password success! Showing options....." << std::endl;
                 break;
             case 5: // EXIT THE PROGRAM
-                std::cout << std::endl << "Thank you for using LockSmith, Exiting the program" << std::endl;
+                #ifdef _WIN32  // If compiling for Windows
+                    std::system("cls");
+                    std::system("cls");
+                #else
+                    std::system("clear");
+                    std::system("clear");
+                #endif
+                std::cout << std::endl << "Console Cleared. Thank you for using LockSmith, Exiting the program" << std::endl;
                 exit(0);
                 break;
             default: // INVALID CHOICE
@@ -116,5 +123,5 @@ int main(){
     }
 
 
-    return 0;
+    return 1;
 }

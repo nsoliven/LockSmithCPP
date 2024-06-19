@@ -256,7 +256,7 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         #endif
     }
-    
+
     std::string password = "";
     std::getline(std::cin, password);
 
@@ -364,10 +364,13 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
 
         if(passwordConfirmation!=password){
+            enc.secureEnoughMemoryDelete(password);
+            enc.secureEnoughMemoryDelete(passwordConfirmation);
             std::cout << "Passwords did not match.. restarting setup" << std::endl << std::endl ;
             continue;
         }
 
+        enc.secureEnoughMemoryDelete(passwordConfirmation); // delete asap after no use
         // if passwords match then get iterations and hash and store.
         std::cout << "\nEnter desired password hashing iterations (100,000 - " << MAX_ITERATIONS << "):\n";
         std::cout << "(Press Enter for the default of ("<< DEFAULT_ITERATIONS <<")\n";
@@ -393,6 +396,7 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         while(hashing){
             try{
                 hashedMasterPassword = enc.hashAndSalt(password, salt, iterations);
+                enc.secureEnoughMemoryDelete(password); // delete after hash is created
                 hashing = false;
             }catch(std::runtime_error& e){
                 std::cerr << e.what() << "Using default iterations instead." << std::endl;
@@ -441,8 +445,8 @@ bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpass
     std::string iterations = tokens[2];
 
     std::string userInput = getPasswordFromUser(1, true);
-
     std::string userHashed = enc.hashAndSalt(userInput, fileSalt, stoi(iterations));
+    enc.secureEnoughMemoryDelete(userInput);
     if(fileHash==userHashed){return true;}
     return false;
 }
@@ -461,6 +465,7 @@ bool SystemPasswordManagement::addPassword(){
         if(!db.addItem(passwordName,emailUsername,password)){
             return false;
         }
+        enc.secureEnoughMemoryDelete(password);
     }catch(const std::invalid_argument& e){
         std::cout << e.what();
         return false;
@@ -516,6 +521,7 @@ bool SystemPasswordManagement::viewPassword(){
         << "Email/Username: " << emailUsername << "\n"
         << "Password: " << password << "\n"
         << "--------------------------\n";
+    enc.secureEnoughMemoryDelete(password);
     return true;
 }
 

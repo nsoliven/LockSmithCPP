@@ -30,7 +30,7 @@ private:
     static constexpr size_t MIN_ITERATIONS = 100000;
     static constexpr size_t MAX_ITERATIONS = 5000000;
 public:
-    // Define the AES encryption and decryption functions
+    // Define the encryption and decryption functions
     std::string aes_encrypt(const std::string &plainText, const std::string &key);
     std::string aes_decrypt(const std::string &cipherText, const std::string &key);
     std::string deriveKey(const std::string &masterPassword);
