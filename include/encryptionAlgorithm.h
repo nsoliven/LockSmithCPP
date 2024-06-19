@@ -36,6 +36,7 @@ public:
     std::string deriveKey(const std::string &masterPassword);
     std::string generateSalt(const int &saltLength);
     std::string hashAndSalt(const std::string &strToHash, const std::string &salt, const size_t iterations);
+    void secureEnoughMemoryDelete(std::string &str);
 
 };
 
