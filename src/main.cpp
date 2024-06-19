@@ -29,7 +29,7 @@ Created in 2023 by NSOLIVEN
 #include "passwordManagement.h"
 
 const std::string dbName = "lockSmithDB.db3";
-const std::string masterFile = "master_password";
+const std::string masterFile = "master_password.hash";
 const int keyLength = 16;
 const unsigned int maxLoginAttempts = 5;
 const unsigned int MASTER_PASSWORD_GET = 1;
@@ -52,11 +52,13 @@ int main(){
 
     //logging in 
     ui.openLoginMenu();
+
     if(!(systemPass.isMasterPasswordFileGood(masterFile))){
-        //if file good that means masterpasslocationfile existed already thus not new instance
+        //if file good that means masterpasslocationfile does not EXIST thhus cant login?
         std::cerr << "Error: MasterPassFile does not exist. Is your filesystem corrupt?" << std::endl;
         return 1;
     }
+
     for(int i = 0; i <= maxLoginAttempts; i++){
         if(systemPass.masterPasswordLogin(masterFile)){break;}
         std::cout<< "Wrong Password! Attempts Left = [" <<

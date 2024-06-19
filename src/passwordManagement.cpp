@@ -365,7 +365,7 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
             std::cout << "Passwords did not match.. restarting setup" << std::endl << std::endl ;
             continue;
         }
-        
+
         // if passwords match then get iterations and hash and store.
         std::cout << "\nEnter desired password hashing iterations (100,000 - " << MAX_ITERATIONS << "):\n";
         std::cout << "(Press Enter for the default of ("<< DEFAULT_ITERATIONS <<")\n";
@@ -397,7 +397,9 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
                 iterations = DEFAULT_ITERATIONS; // replace with default iteration
             }
         }
-        outFile << hashedMasterPassword << std::endl;
+        outFile << hashedMasterPassword << ':'
+                << salt << ':'
+                << iterations;
         outFile.close();
         masterPasswordStillSettingUp = false;
     }
@@ -410,18 +412,36 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
  * @return Bool if success
  */
 bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpasslocation){
-    //grab password from file
     std::ifstream inFile(masterpasslocation);
     if (!inFile) {
         std::cerr << "Error: Unable to open file for writing.\n";
         return false;
     }
-    std::string masterPass;
-    getline(inFile, masterPass);
+
+    std::string line;
+    getline(inFile, line); // Read the entire line
+
+    // Split the line using the colon as the delimiter
+    std::stringstream ss(line);
+    std::vector<std::string> tokens;
+    std::string token;
+    while (std::getline(ss, token, ':')) {
+        tokens.push_back(token);
+    }
+
+    if (tokens.size() != 3) {
+        std::cerr << "Error: Invalid format in file. Expected hash:salt:iterations\n";
+        return false;
+    }
+
+    std::string fileHash = tokens[0];
+    std::string fileSalt = tokens[1];
+    std::string iterations = tokens[2];
 
     std::string userInput = getPasswordFromUser(1, true);
 
-    if(masterPass==userInput){return true;}
+    std::string userHashed = enc.hashAndSalt(userInput, fileSalt, stoi(iterations));
+    if(fileHash==userHashed){return true;}
     return false;
 }
 
