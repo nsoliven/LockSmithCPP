@@ -18,20 +18,33 @@
 
 ## User Compilation and Building
 Windows:
-- Please have CMAKE & GIT installed on your system for building
-- Windows must have dos2unix to convert SQLiteCPP, Windows simply use VSCODE's CMAKE instead.
+- Please have CMAKE & GIT & CONAN installed on your system for building
+- Locate your Conan profile at C:\Users\zurzi\.conan2\profiles
+  - Change compiler.cppstd to compiler.cppstd=20
+```sh
+git clone https://github.com/nsoliven/LockSmithCPP
+cd LockSmithCPP
+conan install . --output-folder=build --build=missing 
+cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -S . -B build
+cmake --build build
+
+#location may be different depending on how you build
+cd out/build/windows_release
+./lockSmithAPP.exe
+```
 
 UNIX/LINUX Building:
-- Please have CMAKE & GIT & GCC Compiler installed on your system for building
+- Please have CMAKE & GIT & CONAN installed on your system for building
+- Locate your Conan profile: The default profile is usually located in ~/.conan/profiles/default.
+  - Change compiler.cppstd to compiler.cppstd=20
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
-git submodule init
-git submodule update
-mkdir build
-cd build
-cmake ..
-cmake --build ./ --config Debug --target all 
+conan install . --output-folder=build --build=missing 
+cmake --build ./out/build/conan_release
+
+#location may be different depending on how you build
+cd ./out/build/conan_release
 ./lockSmithAPP
 ```
 

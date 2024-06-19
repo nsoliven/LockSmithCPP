@@ -184,7 +184,6 @@ bool Database::listItems(std::vector<std::string> &item_names){
         SQLite::Database db(this->dbFileName, SQLite::OPEN_READONLY);
         std::string sql = "SELECT password_name FROM locksmithData";
         SQLite::Statement stmt(db, sql);
-
         while (stmt.executeStep()) {
             item_names.push_back(stmt.getColumn(0).getString());
         }
@@ -241,6 +240,7 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
             return "!errored!";
             break;
         }
+        
     //used for hiding the user input
     if (hidden) {
         #ifdef _WIN32
@@ -256,12 +256,18 @@ std::string SystemPasswordManagement::getPasswordFromUser(const int &type=1, con
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         #endif
     }
+
     std::string password = "";
     std::getline(std::cin, password);
+
 
     if(password.length() < 1 || password.length() > MAX_PASSWORD_LENGTH){
         std::cerr << "BAD LENGTH, 1 <= PASSWORD <= "<< MAX_PASSWORD_LENGTH << std::endl;
         continue;
+    }
+
+    if (!password.empty() && password.back() == '\n') { 
+        password.pop_back();
     }
 
     if (hidden) {
@@ -340,12 +346,14 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         return false;
     }
     
+    //setup part of masterPassword
     bool masterPasswordStillSettingUp = true;
     while(masterPasswordStillSettingUp){
         std::string password = ""; // example password
         std::string passwordConfirmation = ""; //confirm for later
 
         password = getPasswordFromUser(GET_MASTERPASSWORD,true);
+
         if(password.length() < MIN_MASTERPASS_LENGTH){
             std::cout << "We recommend that you create a password longer than " <<
             MIN_MASTERPASS_LENGTH << " Please re-enter a different password" << std::endl;
@@ -355,15 +363,52 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
         std::cout << "Please enter your password again to confirm" << std::endl;
         passwordConfirmation = getPasswordFromUser(GET_MASTERPASSWORD,true);
 
-
-        if(passwordConfirmation==password){
-            outFile << password << std::endl;
-            masterPasswordStillSettingUp = false;
-        }else{
+        if(passwordConfirmation!=password){
+            enc.secureEnoughMemoryDelete(password);
+            enc.secureEnoughMemoryDelete(passwordConfirmation);
             std::cout << "Passwords did not match.. restarting setup" << std::endl << std::endl ;
+            continue;
         }
-    }
 
+        enc.secureEnoughMemoryDelete(passwordConfirmation); // delete asap after no use
+        // if passwords match then get iterations and hash and store.
+        std::cout << "\nEnter desired password hashing iterations (100,000 - " << MAX_ITERATIONS << "):\n";
+        std::cout << "(Press Enter for the default of ("<< DEFAULT_ITERATIONS <<")\n";
+        std::cout << "(More iterations make your password more secure, but will take longer to process)\n";
+
+        std::string iterationInput;
+        std::getline(std::cin, iterationInput);
+
+        size_t iterations = DEFAULT_ITERATIONS;
+        if (!iterationInput.empty()) {
+            try{
+                iterations = std::stoi(iterationInput);
+            }catch(const std::invalid_argument& e) {
+                std::cerr << "Invalid input. Using default iterations.\n";
+            }catch(const std::out_of_range& e) {
+                std::cerr << "Value outside allowed range. Using default iterations.\n";
+            }
+        }
+
+        std::string salt = enc.generateSalt(16);
+        std::string hashedMasterPassword;
+        bool hashing = true;
+        while(hashing){
+            try{
+                hashedMasterPassword = enc.hashAndSalt(password, salt, iterations);
+                enc.secureEnoughMemoryDelete(password); // delete after hash is created
+                hashing = false;
+            }catch(std::runtime_error& e){
+                std::cerr << e.what() << "Using default iterations instead." << std::endl;
+                iterations = DEFAULT_ITERATIONS; // replace with default iteration
+            }
+        }
+        outFile << hashedMasterPassword << ':'
+                << salt << ':'
+                << iterations;
+        outFile.close();
+        masterPasswordStillSettingUp = false;
+    }
     return true;
 }
 
@@ -373,18 +418,36 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
  * @return Bool if success
  */
 bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpasslocation){
-    //grab password from file
     std::ifstream inFile(masterpasslocation);
     if (!inFile) {
         std::cerr << "Error: Unable to open file for writing.\n";
         return false;
     }
-    std::string masterPass;
-    getline(inFile, masterPass);
+
+    std::string line;
+    getline(inFile, line); // Read the entire line
+
+    // Split the line using the colon as the delimiter
+    std::stringstream ss(line);
+    std::vector<std::string> tokens;
+    std::string token;
+    while (std::getline(ss, token, ':')) {
+        tokens.push_back(token);
+    }
+
+    if (tokens.size() != 3) {
+        std::cerr << "Error: Invalid format in file. Expected hash:salt:iterations\n";
+        return false;
+    }
+
+    std::string fileHash = tokens[0];
+    std::string fileSalt = tokens[1];
+    std::string iterations = tokens[2];
 
     std::string userInput = getPasswordFromUser(1, true);
-
-    if(masterPass==userInput){return true;}
+    std::string userHashed = enc.hashAndSalt(userInput, fileSalt, stoi(iterations));
+    enc.secureEnoughMemoryDelete(userInput);
+    if(fileHash==userHashed){return true;}
     return false;
 }
 
@@ -402,6 +465,7 @@ bool SystemPasswordManagement::addPassword(){
         if(!db.addItem(passwordName,emailUsername,password)){
             return false;
         }
+        enc.secureEnoughMemoryDelete(password);
     }catch(const std::invalid_argument& e){
         std::cout << e.what();
         return false;
@@ -457,6 +521,7 @@ bool SystemPasswordManagement::viewPassword(){
         << "Email/Username: " << emailUsername << "\n"
         << "Password: " << password << "\n"
         << "--------------------------\n";
+    enc.secureEnoughMemoryDelete(password);
     return true;
 }
 
