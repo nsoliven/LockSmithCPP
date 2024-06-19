@@ -5,3 +5,6 @@ sqlitecpp/3.3.1
 [generators]
 CMakeDeps
 CMakeToolchain
+
+[options]
+botan/*:amalgamation=False

@@ -205,8 +205,8 @@ bool SystemPasswordManagement::getIfNewDatabase(){
 }
 
 
-bool SystemPasswordManagement::isMasterPasswordFileGood(const std::string& masterpasslocation){
-    std::ifstream file(masterpasslocation);
+bool SystemPasswordManagement::isMasterPasswordFileGood(const std::string& masterPassLocation){
+    std::ifstream file(masterPassLocation);
     return file.good();
 
 }
@@ -329,20 +329,20 @@ std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
 
 
 /**
- * @brief Used for if user decides to setup a new system, we will store the password securely.
- *  [UNSECURE]
+ * @brief Used for building masterPassword hash and salt. Stores in hash file safely.
+ * 
  * @return Bool if setup successful!
  */
-bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpasslocation){
+bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterPassLocation){
 
-    if(isMasterPasswordFileGood(masterpasslocation)){
-        //if file good that means masterpasslocationfile existed already thus not new instance
+    if(isMasterPasswordFileGood(masterPassLocation)){
+        //if file good that means masterPassLocationfile existed already thus not new instance
         std::cerr << "Error: MasterPassFile already exists, not new instance" << std::endl;
         return false;
     }
 
     //create outfile
-    std::ofstream outFile(masterpasslocation);
+    std::ofstream outFile(masterPassLocation);
     if (!outFile) {
         std::cerr << "Error: Unable to open file for writing. Did you give write permissions?" << std::endl;
         return false;
@@ -367,9 +367,12 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
             continue;
         }
         // if passwords match then get iterations and hash and store.
-        std::cout << "\nEnter desired password hashing iterations (100,000 - " << MAX_ITERATIONS << "):\n";
-        std::cout << "(Press Enter for the default of ("<< DEFAULT_ITERATIONS <<")\n";
+        std::cout << "--------------------------" << std::endl;
+        std::cout << "\nChoose MasterPassword Hashing Iterations ("<<MIN_ITERATIONS<<" - " << MAX_ITERATIONS << ")\n";
+        std::cout << "(Press Enter for the default of "<< DEFAULT_ITERATIONS <<" iterations.)\n";
         std::cout << "(More iterations make your password more secure, but will take longer to process)\n";
+        std::cout << "\nEnter iterations choice: ";
+
 
         std::string iterationInput;
         std::getline(std::cin, iterationInput);
@@ -413,8 +416,8 @@ bool SystemPasswordManagement::masterPasswordSetup(const std::string& masterpass
  *  
  * @return Bool if success
  */
-bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterpasslocation){
-    std::ifstream inFile(masterpasslocation);
+bool SystemPasswordManagement::masterPasswordLogin(const std::string& masterPassLocation){
+    std::ifstream inFile(masterPassLocation);
     if (!inFile) {
         std::cerr << "Error: Unable to open file for writing.\n";
         return false;

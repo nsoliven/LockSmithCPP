@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project(LockSmith VERSION 0.1.3.0)
 
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(OPENSSL_USE_STATIC_LIBS TRUE)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Add subdirectory for SQLiteCpp

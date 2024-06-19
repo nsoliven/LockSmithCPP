@@ -111,7 +111,9 @@ int main(){
                     std::system("clear");
                     std::system("clear");
                 #endif
-                std::cout << std::endl << "Console Cleared. Thank you for using LockSmith, Exiting the program" << std::endl;
+                std::cout << "--------------------------" << std::endl;
+                std::cout << "Console Cleared. Thank you for using LockSmith by NSOLIVEN, Exiting the program" << std::endl;
+                std::cout << "--------------------------" << std::endl;
                 exit(0);
                 break;
             default: // INVALID CHOICE

@@ -10,10 +10,8 @@ Created in 2023 by NSOLIVEN
 /**
  * @brief Using key, we will encrypt the text passed through and it will be hashed to be stored
  * 
- * NOTE: AUTOMATICALLY DESTROYS PLAINTEXT DURING CALL
- *  
- * @param string plainText to be encrypted
- * @param string key to use to encrypt
+ * @param secure_vector plainText to be encrypted
+ * @param secure_vecto key to use to encrypt
  * @return string of password encrypted item to store in database later on
  */
 std::string Encryption::encrypt(Botan::secure_vector<char> &plainText, Botan::secure_vector<char> &key){
@@ -45,7 +43,7 @@ std::string Encryption::encrypt(Botan::secure_vector<char> &plainText){
  * @brief Using key, decrypt cipherText
  *  
  * @param string cipherText
- * @param string key
+ * @param secure_vector key
  * @return string of password unencrypted
  */
 Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText, Botan::secure_vector<char> &key){
@@ -136,23 +134,4 @@ std::string Encryption::hashAndSalt(Botan::secure_vector<char> &strToHash, const
     pwd_hash->derive_key(key.data(), key.size(), strToHash.data(), strToHash.size(), salt_vec.data(), salt_vec.size());
 
     return Botan::hex_encode(key.data(), key.size());
-}
-
-/**
- * @brief The function effectively overwrites the sensitive string data in memory with random bytes. 
- *        This makes it significantly more difficult for an attacker to recover the original password if they gain access to the system's memory.
- * 
- * NOTE: this is not meant to be 100% secure as there are other neuances to memory attacks. 
- *       these memory attacks are out of scope for the security of this project.
- * 
- *       Some sophisticated techniques could potentially recover data even after it's overwritten.
- *       However, such attacks will be complex and often require significant resources and access to the target system.
- * 
- * @param string string to be replaced just in case of a memory hack
- * @return none
- */
-
-
-std::string Encryption::getDecryptEncryptSalt(){
-    return this->decryptEncryptSalt;
 }

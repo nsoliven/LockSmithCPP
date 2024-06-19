@@ -66,7 +66,6 @@ private:
     static constexpr size_t MIN_ITERATIONS = 100000;
     static constexpr size_t MAX_ITERATIONS = 5000000;
 
-    bool hasErrored = false;
     Database db;
     Encryption enc;
     
@@ -74,17 +73,15 @@ public:
     SystemPasswordManagement(const std::string& dbFileName);
     bool masterPasswordSetup(const std::string& masterpasslocation);
     bool masterPasswordLogin(const std::string& masterpasslocation);
-    bool isMasterPasswordFileGood(const std::string& masterpasslocation);
-    bool getIfNewDatabase();
     Botan::secure_vector<char> getPasswordFromUser(const int &type,const bool &hidden);
     std::string getStringFromUser(const int &type);
     bool addPassword();
     bool removePassword();
     bool viewPassword();
     bool listAllPasswords();
-
     bool printSecureVector(Botan::secure_vector<char> secure_vector);
-    
+    bool isMasterPasswordFileGood(const std::string& masterpasslocation);
+    bool getIfNewDatabase();
 };
 
 

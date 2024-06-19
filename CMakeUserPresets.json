@@ -2,7 +2,7 @@
     "version": 3,
     "configurePresets": [
       {
-        "name": "conan_release",
+        "name": "unix_release",
         "hidden": false,
         "cacheVariables": {
           "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/build/conan_toolchain.cmake",

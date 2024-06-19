@@ -24,7 +24,7 @@ void UserInterface::openNewInstanceMenu(){
     std::cout << "Welcome to LockSmith C++ by NSOLIVEN" << std::endl;
     std::cout << "--------------------------" << std::endl;
     std::cout << "We have detected that this is your first time using LockSmith C++" << std::endl;
-    std::cout << "Please create a new password to secure your passwords" << std::endl << std::endl;
+    std::cout << "Please create a MASTER PASSWORD to login to LockSmithC++" << std::endl << std::endl;
 }
 
 void UserInterface::openLoginMenu(){
