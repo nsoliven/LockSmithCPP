@@ -42,7 +42,7 @@ cd ./out/build/windows_release
 
 **UNIX/LINUX Building:**
 - Please have CMAKE & GIT & CONAN installed on your system for building
-- Locate your Conan profile: The default profile is usually located in ~/.conan/profiles/default.
+- Locate your Conan profile: The default profile is usually located in ~/.conan2/profiles/default.
   - Change compiler.cppstd to compiler.cppstd=20
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
