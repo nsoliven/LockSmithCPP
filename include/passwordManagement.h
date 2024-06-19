@@ -67,10 +67,9 @@ private:
     static constexpr size_t MAX_ITERATIONS = 5000000;
 
     bool hasErrored = false;
-
     Database db;
     Encryption enc;
-    std::string masterPasswordHash;
+    
 public:
     SystemPasswordManagement(const std::string& dbFileName);
     bool masterPasswordSetup(const std::string& masterpasslocation);

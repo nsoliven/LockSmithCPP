@@ -5,20 +5,7 @@ Learn more @ https://github.com/nsoliven/locksmithcpp
 Created in 2023 by NSOLIVEN
 
 */
-
-
-
 #include "encryptionAlgorithm.h"
-
-#include <string>
-#include <random>
-
-
-/*
-    Usage Notes:
-    aes_encrypt and aes_decrypt called by SystemPasswordManagement
-*/
-
 
 /**
  * @brief Using key, we will encrypt the text passed through and it will be hashed to be stored
@@ -48,9 +35,12 @@ std::string Encryption::encrypt(Botan::secure_vector<char> &plainText, Botan::se
     return Botan::hex_encode(cipher_text);
 }
 
+//overload to use keyFromMaster on setup
 std::string Encryption::encrypt(Botan::secure_vector<char> &plainText){
     return encrypt(plainText, keyFromMaster);
 }
+
+
 /**
  * @brief Using key, decrypt cipherText
  *  
@@ -77,10 +67,11 @@ Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText, Bo
     decryptor->finish(enc_text);
     return Botan::secure_vector<char> (enc_text.begin(), enc_text.end());
 }
-
+//overload to use keyFromMaster on setup
 Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText){
     return decrypt(cipherText, keyFromMaster);
 }
+
 /**
  * @brief Create and return a key based from masterPassword string passed through
  *  
@@ -160,19 +151,6 @@ std::string Encryption::hashAndSalt(Botan::secure_vector<char> &strToHash, const
  * @param string string to be replaced just in case of a memory hack
  * @return none
  */
-void Encryption::secureEnoughMemoryDelete(std::string &str){
-    Botan::AutoSeeded_RNG rng; // Create an RNG
-    size_t length = str.size(); // Determine the length of the string
-    Botan::secure_vector<uint8_t> random_bytes = rng.random_vec(length); // Generate random bytes
-
-    for (size_t i = 0; i < length; ++i) {
-        str[i] = static_cast<char>(random_bytes[i]); 
-    }
-
-    // Force a read (to discourage optimization) 
-    volatile char &dummy = str[0]; // Use a volatile reference to str
-    (void)dummy; // Avoid "unused variable" warnings
-}
 
 
 std::string Encryption::getDecryptEncryptSalt(){

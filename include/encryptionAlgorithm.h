@@ -46,8 +46,6 @@ public:
     void deriveKey(Botan::secure_vector<char> &masterPassword,std::string &decryptEncryptSalt);
     std::string generateSalt(const int &saltLength);
     std::string hashAndSalt(Botan::secure_vector<char> &strToHash, const std::string &salt, const size_t iterations = DEFAULT_ITERATIONS, const size_t keyLength = 32);
-    void secureEnoughMemoryDelete(std::string &str);
-
     std::string getDecryptEncryptSalt();
 };
 
