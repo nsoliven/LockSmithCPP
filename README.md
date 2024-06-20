@@ -3,7 +3,9 @@ _Author: NSoliven_
 
 **Skills Demonstrated:** `C++`, `SQLite`, `SQL`, `Cryptography with ARGON2`, `Botan`, `Object-Oriented Programming`
 
-🔐 A minimalistic password manager application built with C++ and SQLite
+🔐 A minimalistic password manager application built with C++ and SQLite and Botan.
+
+_Crossplatform on Linux, Windows, and MacOS_
 
 ## IMPORTANT NOTES ON SECURITY:
 
@@ -22,6 +24,7 @@ _Author: NSoliven_
 
 ## User Installation
 - Dependencies not needed, everything statically linked and included in executable files (lockSmithApp.exe and lockSmithApp.pm)
+- Go to releases and select latest download for your OS! Supports Windows, MacOS, and Linux [https://github.com/nsoliven/LockSmithCPP/releases](https://github.com/nsoliven/LockSmithCPP/releases)
 
 ## User Compilation and Building
 **Windows:**
