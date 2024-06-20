@@ -5,17 +5,18 @@ project(LockSmith VERSION 0.1.3.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
-# Prefer static libraries
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-set(BUILD_SHARED_LIBS OFF)
+# Prefer static libraries (work for Linux)
+if(NOT APPLE)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+    set(BUILD_SHARED_LIBS OFF)
+endif()
 
-# Set static flag for all platforms
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+# Set static flags for all platforms
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
-# Special static linking flags for Unix-like systems (Linux and macOS)
-if(UNIX AND NOT MINGW)
-    # Avoid using -static with glibc to prevent dlopen issues
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+# Special static linking flags for Linux
+if(UNIX AND NOT APPLE AND NOT MINGW)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
 endif()
 
