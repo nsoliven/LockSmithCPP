@@ -26,6 +26,31 @@ _Crossplatform on Linux, Windows, and MacOS_
 - Dependencies not needed, everything statically linked and included in executable files (lockSmithApp.exe and lockSmithApp.pm)
 - Go to releases and select latest download for your OS! Supports Windows, MacOS, and Linux [Release Page Here](https://github.com/nsoliven/LockSmithCPP/releases)
 
+## Notes!
+
+1. **If having permission/anti-virus issues please do the following depending on OS:**
+
+   **Windows:**
+   1. Right-click the program and choose "Properties."
+   2. Go to the "Security" tab and click "Edit."
+   3. Grant "Full control" to your user account.
+   4. If needed, temporarily disable your antivirus software by right-clicking its icon in the system tray and choosing "Disable" or a similar option.
+
+   **macOS**
+   1. Open "System Preferences" > "Security & Privacy" > "General."
+   2. If the program is blocked, click "Open Anyway" or "Allow."
+   3. For future access, change "Allow apps downloaded from" to "Anywhere" (use with caution).
+   4. Open Terminal.
+   5. Navigate to the program's directory: `cd /path/to/program`
+   6. Make it executable: `chmod +x lockSmithCPP-MacOS`
+
+   **Linux/Debian:**
+   1. Open Terminal.
+   2. Navigate to the program's directory: `cd /path/to/program`
+   3. Make it executable: `chmod +x lockSmithCPP-Debian`
+
+2. **If needing to reset DB and Master Password, delete the following: lockSmithDB.db3, master_password.hash.**
+
 ## User Compilation and Building
 **Windows:**
 - Please have CMAKE & GIT & CONAN installed on your system for building
