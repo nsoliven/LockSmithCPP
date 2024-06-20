@@ -26,8 +26,6 @@ _Crossplatform on Linux, Windows, and MacOS_
 - Dependencies not needed, everything statically linked and included in executable files (lockSmithApp.exe and lockSmithApp.pm)
 - Go to releases and select latest download for your OS! Supports Windows, MacOS, and Linux [Release Page Here](https://github.com/nsoliven/LockSmithCPP/releases)
 
-## Notes!
-
 1. **If having permission/anti-virus issues please do the following depending on OS:**
 
    **Windows:**
