@@ -8,3 +8,5 @@ CMakeToolchain
 
 [options]
 botan/*:amalgamation=False
+SQLiteCpp/*:shared=False
+botan/*:shared=False
