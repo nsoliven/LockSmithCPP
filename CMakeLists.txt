@@ -5,11 +5,12 @@ project(LockSmith VERSION 0.1.3.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Prefer static libraries
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 set(BUILD_SHARED_LIBS OFF)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 
 # Add subdirectory for SQLiteCpp
 find_package(SQLiteCpp REQUIRED)
@@ -37,13 +38,9 @@ add_executable(lockSmithApp src/main.cpp)
 target_link_libraries(lockSmithApp PRIVATE lockSmithLib)
 
 # Link additional libraries for UNIX
-if(UNIX)
-    target_link_libraries(lockSmithApp PRIVATE dl)
-endif()
-
+#if(UNIX)
+    #target_link_libraries(lockSmithApp PRIVATE dl)
+#endif()
 if(MINGW)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
-
     target_link_libraries(lockSmithApp PRIVATE -static -static-libgcc -static-libstdc++)
 endif()
