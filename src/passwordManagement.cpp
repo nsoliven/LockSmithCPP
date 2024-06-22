@@ -151,6 +151,8 @@ bool Database::removeItem(const std::string &pass_name) {
  * @brief View the details of a specific password
  * 
  * @param pass_name const string&: Name of the password database entry
+ * @param username string&, used to store username
+ * @param passwordEncrypted string&, used to store passwordEncrypted. Does not handle decryption. 
  *  
  * @return if successful or not
  */
@@ -173,9 +175,9 @@ bool Database::getItem(const std::string &pass_name,std::string &username,std::s
 }
 
 /**
- * @brief Lists all items in the db and saves in arr
+ * @brief Gets all the items in a DB then stores inside of a vector
  * 
- * @param string vector that will hold all items item_names
+ * @param vector<std::string> &item_names. Where to store items
  *  
  * @return if successful or not
  */
@@ -214,7 +216,8 @@ bool SystemPasswordManagement::isMasterPasswordFileGood(const std::string& maste
  * @brief Used for grabbing password from user from console input
  *        Console input is hidden to prevent visual stealing of password with bool
  * 
- *        Password not hashed here yet, it is stored in plain text and is vulnerable in memory.
+ *        Password not hashed here yet, it is stored in plain text and is vulnerable in memory. 
+ *        Unsafe until SystemPasswordManagement/Function User clears the returned secure vector once done with use.
  *
  * @param type Type of password we are getting,
  *        0 = (default) get password for regular storing
@@ -292,24 +295,20 @@ Botan::secure_vector<char> SystemPasswordManagement::getPasswordFromUser(const i
 }
 
 /**
- * @brief Used for grabbing password from user from console input
- *        Console input is hidden to prevent visual stealing of password with bool
+ * @brief Used for basic strings from console. Ex. password name and username / email
  * 
- *        Password not hashed here yet, it is stored in plain text and is vulnerable in memory.
  *
- * @param type Type of password we are getting,
- *        0 = getPasswordName
- *        1 = getEmail
+ * @param int type of string to get. ex 0 = password name, 1 = username
  * @param hidden bool if to hide data or not, default true
  * @return string of password grabbed
  */
 std::string SystemPasswordManagement::getStringFromUser(const int &type = 0){
     switch(type){
         case 0:
-        std::cout<<"Enter your Password NAME: ";
+        std::cout<<"Enter your a name for your password: ";
             break;
         case 1:
-        std::cout<<"Enter your USERNAME/EMAIL: ";
+        std::cout<<"Enter your Username/Email: ";
             break;
         default:
             throw std::invalid_argument
