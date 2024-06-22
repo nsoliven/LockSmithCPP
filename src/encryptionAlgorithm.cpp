@@ -80,6 +80,7 @@ Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText){
 void Encryption::deriveKey(Botan::secure_vector<char> &masterPassword,std::string &decryptEncryptSalt){
     std::string key = hashAndSalt(masterPassword,decryptEncryptSalt,600000,16);
     keyFromMaster.assign(key.begin(), key.end());
+    Botan::secure_scrub_memory(key.data(), key.size()); // clear key from memory as soon as possible
     this->decryptEncryptSalt = decryptEncryptSalt;
     keysInitialized = true;
 }

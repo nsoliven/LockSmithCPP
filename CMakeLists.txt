@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.22.1)
 
+enable_testing()
+
 project(LockSmith VERSION 0.1.3.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Prefer static libraries (work for Linux)
 if(NOT APPLE)
@@ -28,6 +31,7 @@ endif()
 # Add subdirectory for SQLiteCpp
 find_package(SQLiteCpp REQUIRED)
 find_package(botan REQUIRED)
+find_package(GTest REQUIRED)
 
 # Set our library files
 set(lockSmithLibFiles 
@@ -36,20 +40,29 @@ set(lockSmithLibFiles
     src/userInterface.cpp
 )
 
+file(GLOB testFiles "tests/*.cpp")
+
 # Create a static library
 add_library(lockSmithLib STATIC ${lockSmithLibFiles})
 target_link_libraries(lockSmithLib SQLiteCpp botan::botan SQLite::SQLite3)
+target_link_libraries(lockSmithLib GTest::GTest GTest::Main)
 
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Create the executable
 add_executable(lockSmithApp src/main.cpp)
+add_executable(LockSmith_tests ${testFiles})
+
 
 # Link libraries to the executable
 target_link_libraries(lockSmithApp PRIVATE lockSmithLib)
+target_link_libraries(LockSmith_tests lockSmithLib)
 
 # Special static linking for Windows (MinGW) libraries
 if(MINGW)
     target_link_libraries(lockSmithApp PRIVATE -static -static-libgcc -static-libstdc++)
 endif()
+
+# Add tests to CTest
+add_test(NAME LockSmithUnitTests COMMAND LockSmith_tests)
