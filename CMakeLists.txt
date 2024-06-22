@@ -40,7 +40,6 @@ set(lockSmithLibFiles
     src/userInterface.cpp
 )
 
-file(GLOB testFiles "tests/*.cpp")
 
 # Create a static library
 add_library(lockSmithLib STATIC ${lockSmithLibFiles})
@@ -52,12 +51,13 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Create the executable
 add_executable(lockSmithApp src/main.cpp)
-add_executable(LockSmith_tests ${testFiles})
-
+add_executable(lockSmithEncryptionTest tests/test_encryptionAlgorithm.cpp)
+add_executable(lockSmithPasswordManagement tests/test_passwordManagement.cpp)
 
 # Link libraries to the executable
 target_link_libraries(lockSmithApp PRIVATE lockSmithLib)
-target_link_libraries(LockSmith_tests lockSmithLib)
+target_link_libraries(lockSmithEncryptionTest lockSmithLib)
+target_link_libraries(lockSmithPasswordManagement lockSmithLib)
 
 # Special static linking for Windows (MinGW) libraries
 if(MINGW)
@@ -65,4 +65,5 @@ if(MINGW)
 endif()
 
 # Add tests to CTest
-add_test(NAME LockSmithUnitTests COMMAND LockSmith_tests)
+add_test(NAME lockSmithEncryptionTest COMMAND lockSmithEncryptionTest)
+add_test(NAME lockSmithPasswordManagementTest COMMAND lockSmithPasswordManagement)
