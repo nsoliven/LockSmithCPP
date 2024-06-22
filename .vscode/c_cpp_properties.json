@@ -10,7 +10,6 @@
             "macFrameworkPath": [
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],
-            "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "macos-clang-arm64",
@@ -37,16 +36,14 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/**",
-                "~/.conan2/p",
-                "/home/solnas/.conan2/p/b/botanfee51a6d776ed/p/include/botan-3"
+                "${workspaceFolder}/build/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
+            "compileCommands": "${workspaceFolder}/out/build/unix_release/compile_commands.json",
             "cStandard": "c17",
             "cppStandard": "gnu++20",
-            "intelliSenseMode": "linux-gcc-x64",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4

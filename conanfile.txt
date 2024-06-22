@@ -1,6 +1,7 @@
 [requires]
 botan/3.4.0
 sqlitecpp/3.3.1
+gtest/1.12.1
 
 [generators]
 CMakeDeps
@@ -10,3 +11,4 @@ CMakeToolchain
 botan/*:amalgamation=False
 SQLiteCpp/*:shared=False
 botan/*:shared=False
+gtest/*:shared=False
