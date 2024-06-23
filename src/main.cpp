@@ -74,35 +74,41 @@ int main(){
         std::string userIn;
         std::getline(std::cin, userIn);
         try{
+            //check if input is only a number
+            for (char c : userIn) {
+                if (!std::isdigit(static_cast<unsigned char>(c))) {
+                    throw std::invalid_argument("Input contains non-numeric characters");
+                }
+            }
             int choice = std::stoi(userIn);
             switch(choice){
             case 1: //ADD A PASSWORD
                 if(!systemPass.addPassword()){
-                    std::cout << "Add password fail, restarting options" << std::endl;
-                    continue;
+                    ui.singleLineOutput("Add password fail, restarting options", 'r');
+                    continue;   
                 }
-                std::cout << "Added password to database success! Showing options....." << std::endl;
+                ui.singleLineOutput("Added password to database success! Showing options.....", 'g');
                 break;
             case 2: //VIEW ALL PASSWORD
                 if(!systemPass.listAllPasswords()){
-                    std::cout << std::endl << "List all password fail, restarting options" << std::endl;
+                    ui.singleLineOutput("List all password fail, restarting options", 'r');
                     continue;
                 }
-                std::cout << std::endl << "View all database password(s) success! Showing options....." << std::endl;
+                ui.singleLineOutput("View all database password(s) success! Showing options.....", 'g');
                 break;
             case 3: //VIEW A PASSWORD
                 if(!systemPass.viewPassword()){
-                    std::cout << std::endl << "View password fail, restarting options" << std::endl;
+                    ui.singleLineOutput("View password fail, restarting options", 'r');
                     continue;
                 }
-                std::cout << std::endl << "View database password success! Showing options....." << std::endl;
+                ui.singleLineOutput("View database password success! Showing options.....", 'g');
                 break;
             case 4: //DELETE A PASSWORD
                 if(!systemPass.removePassword()){
-                    std::cout << std::endl << "Remove password fail, restarting options" << std::endl;
+                    ui.singleLineOutput("Remove password fail, restarting options", 'r');
                     continue;
                 }
-                std::cout << std::endl << "Remove password success! Showing options....." << std::endl;
+                ui.singleLineOutput("Remove password success! Showing options.....", 'g');
                 break;
             case 5: // EXIT THE PROGRAM
                 #ifdef _WIN32  // If compiling for Windows
@@ -116,17 +122,15 @@ int main(){
                         // Handle the error (e.g., log it, retry, exit)
                     }
                 #endif
-                std::cout << "--------------------------" << std::endl;
-                std::cout << "Console Cleared. Thank you for using LockSmith by NSOLIVEN, Exiting the program" << std::endl;
-                std::cout << "--------------------------" << std::endl;
+                ui.singleLineOutput("Console Cleared. Thank you for using LockSmith by NSOLIVEN, Exiting the program", 'g');
                 exit(0);
                 break;
             default: // INVALID CHOICE
-                std::cerr << std::endl << "Invalid input, please enter a valid number." << std::endl;
+                ui.singleLineOutput("Incorrect choice. Please try again", 'r');
                 break;
             }
         }catch (const std::invalid_argument& e){
-            std::cerr << std::endl << "Invalid input, please enter a valid number." << std::endl;
+            ui.invalidInput();
         }
     }
 

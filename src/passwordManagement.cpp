@@ -227,69 +227,71 @@ bool SystemPasswordManagement::isMasterPasswordFileGood(const std::string& maste
  */
 Botan::secure_vector<char> SystemPasswordManagement::getPasswordFromUser(const int &type=1, const bool &hidden = true){
     while(true){
-        switch(type){
-        case 0:
-            if(hidden){
-                std::cout << "Enter a password, [Input is hidden]: ";
-            }else{std::cout << "Enter a password, [Input is NOT HIDDEN]: ";}
-            break;
-        case 1:
-            if(hidden){
-                std::cout << "Enter your master password, [Input is hidden]: ";
-            }else{std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";}
-            break;
-        default:
-            std::cerr << "SystemPasswordManagement invalid type: " << type << std::endl;
-            break;
+            switch(type){
+            case 0:
+                if(hidden){
+                    std::cout << "Enter a password, [Input is hidden]: ";
+                }else{std::cout << "Enter a password, [Input is NOT HIDDEN]: ";}
+                break;
+            case 1:
+                if(hidden){
+                    std::cout << "Enter your master password, [Input is hidden]: ";
+                }else{std::cout << "Enter your master password, [Input is NOT HIDDEN]: ";}
+                break;
+            default:
+                std::cerr << "SystemPasswordManagement invalid type: " << type << std::endl;
+                break;
+            }
+            
+        //used for hiding the user input
+        if (hidden) {
+            #ifdef _WIN32
+            HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
+            DWORD mode = 0;
+            GetConsoleMode(hStdin, &mode);
+            SetConsoleMode(hStdin, mode & (~(ENABLE_ECHO_INPUT)));
+            #else
+            struct termios oldt, newt;
+            tcgetattr(STDIN_FILENO, &oldt);
+            newt = oldt;
+            newt.c_lflag &= ~(ECHO);
+            tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+            #endif
         }
-        
-    //used for hiding the user input
-    if (hidden) {
-        #ifdef _WIN32
-        HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
-        DWORD mode = 0;
-        GetConsoleMode(hStdin, &mode);
-        SetConsoleMode(hStdin, mode & (~(ENABLE_ECHO_INPUT)));
-        #else
-        struct termios oldt, newt;
-        tcgetattr(STDIN_FILENO, &oldt);
-        newt = oldt;
-        newt.c_lflag &= ~(ECHO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-        #endif
-    }
 
-    Botan::secure_vector<char> secure_password;
-    char ch;
-    while (std::cin.get(ch) && ch != '\n') {
-        secure_password.push_back(ch);
-    }
+        Botan::secure_vector<char> secure_password;
+        char ch;
+        std::cin >> std::ws;
 
-    if(secure_password.size() < 1 || secure_password.size() > MAX_PASSWORD_LENGTH){
-        std::cerr << "BAD LENGTH, 1 <= PASSWORD <= "<< MAX_PASSWORD_LENGTH << std::endl;
-        continue;
-    }
+        while (std::cin.get(ch) && ch != '\n') {
+            secure_password.push_back(ch);
+        }
 
-    if (!secure_password.empty() && secure_password.back() == '\n') { 
-        secure_password.pop_back();
-    }
+        if(secure_password.size() < 1 || secure_password.size() > MAX_PASSWORD_LENGTH){
+            std::cerr << "BAD LENGTH, 1 <= PASSWORD <= "<< MAX_PASSWORD_LENGTH << std::endl;
+            continue;
+        }
 
-    if (hidden) {
-        #ifdef _WIN32
-        HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
-        DWORD mode = 0;
-        GetConsoleMode(hStdin, &mode);
-        SetConsoleMode(hStdin, mode | ENABLE_ECHO_INPUT);
-        #else
-        struct termios oldt;
-        tcgetattr(STDIN_FILENO, &oldt);
-        oldt.c_lflag |= ECHO;
-        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-        #endif
-        std::cout << std::endl;
-    }
+        if (!secure_password.empty() && secure_password.back() == '\n') { 
+            secure_password.pop_back();
+        }
 
-    return secure_password;
+        if (hidden) {
+            #ifdef _WIN32
+            HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE); 
+            DWORD mode = 0;
+            GetConsoleMode(hStdin, &mode);
+            SetConsoleMode(hStdin, mode | ENABLE_ECHO_INPUT);
+            #else
+            struct termios oldt;
+            tcgetattr(STDIN_FILENO, &oldt);
+            oldt.c_lflag |= ECHO;
+            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+            #endif
+            std::cout << std::endl;
+        }
+        return secure_password;
+        throw std::invalid_argument("Invalid use of std::string SystemPasswordManagement::getPasswordFromUser");
     }
 
 }

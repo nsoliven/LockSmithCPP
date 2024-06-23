@@ -10,9 +10,16 @@ Created in 2023 by NxSOLIVEN
 
 #include <string>
 #include <iostream>
+#include <fmt/color.h>
 
 
 class UserInterface{
+private:
+    const std::string bold = "\033[1m";
+    const std::string reset = "\033[0m";
+    const std::string bright_blue = "\033[1;34m"; // Bright blue color for "LockSmith C++"
+    const std::string red = "\033[1;31m"; // Red color for "MASTER PASSWORD"
+    const std::string green = "\033[1;32m"; // Green color for "LockSmith C++"
 public:
     void openMainMenu();
     void openLoginMenu();
@@ -22,6 +29,11 @@ public:
     void openRemovePasswordMenu();
     void openEditPasswordMenu();
     void masterPasswordSetupSuccess();
+    void incorrectPassword();
+    void incorrectChoice();
+    void invalidInput();
+    void clearScreenOutput();
+    void singleLineOutput(const std::string &output, const char &color);
 };
 
 

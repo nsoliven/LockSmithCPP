@@ -78,9 +78,9 @@ Botan::secure_vector<char> Encryption::decrypt(const std::string &cipherText){
  * @return key derived from masterPassword
  */
 void Encryption::deriveKey(Botan::secure_vector<char> &masterPassword,std::string &decryptEncryptSalt){
-    std::string key = hashAndSalt(masterPassword,decryptEncryptSalt,600000,16);
-    keyFromMaster.assign(key.begin(), key.end());
-    Botan::secure_scrub_memory(key.data(), key.size()); // clear key from memory as soon as possible
+    Botan::secure_vector<char> key = hashAndSaltVec(masterPassword,decryptEncryptSalt,600000,32);
+    keyFromMaster = key;
+    key.clear(); //clear key from memory as soon as possible
     this->decryptEncryptSalt = decryptEncryptSalt;
     keysInitialized = true;
 }
@@ -109,7 +109,11 @@ std::string Encryption::generateSalt(const int &saltLength){
  * @return hashed string consisting of 64 hex digits (32 bytes)
  */
 std::string Encryption::hashAndSalt(Botan::secure_vector<char> &strToHash, const std::string &salt, const size_t iterations, const size_t keyLength) {
-
+    Botan::secure_vector<char> key = hashAndSaltVec(strToHash, salt, iterations, keyLength);
+    std::string key_str = Botan::hex_encode(Botan::secure_vector<uint8_t>(key.begin(), key.end()));
+    return key_str;
+}
+Botan::secure_vector<char> Encryption::hashAndSaltVec(Botan::secure_vector<char> &strToHash, const std::string &salt, const size_t iterations, const size_t keyLength){
     if(iterations<MIN_ITERATIONS){
         throw std::runtime_error("Input of less than " + std::to_string(MIN_ITERATIONS) + " iterations is not recommended for security\n");
     }
@@ -134,5 +138,6 @@ std::string Encryption::hashAndSalt(Botan::secure_vector<char> &strToHash, const
 
     pwd_hash->derive_key(key.data(), key.size(), strToHash.data(), strToHash.size(), salt_vec.data(), salt_vec.size());
 
-    return Botan::hex_encode(key.data(), key.size());
+    //hex encode the key and place in Botan::secure_vector<char>
+    return Botan::secure_vector<char>(key.begin(), key.end());
 }

@@ -32,6 +32,7 @@ endif()
 find_package(SQLiteCpp REQUIRED)
 find_package(botan REQUIRED)
 find_package(GTest REQUIRED)
+find_package(FMT REQUIRED)
 
 # Set our library files
 set(lockSmithLibFiles 
@@ -43,7 +44,7 @@ set(lockSmithLibFiles
 
 # Create a static library
 add_library(lockSmithLib STATIC ${lockSmithLibFiles})
-target_link_libraries(lockSmithLib SQLiteCpp botan::botan SQLite::SQLite3)
+target_link_libraries(lockSmithLib SQLiteCpp botan::botan SQLite::SQLite3 fmt::fmt)
 target_link_libraries(lockSmithLib GTest::GTest GTest::Main)
 
 # Include directories

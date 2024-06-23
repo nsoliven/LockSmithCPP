@@ -64,7 +64,8 @@
         "typeinfo": "cpp",
         "any": "cpp",
         "set": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "cinttypes": "cpp"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/g++",
 }

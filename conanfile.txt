@@ -2,6 +2,7 @@
 botan/3.4.0
 sqlitecpp/3.3.1
 gtest/1.12.1
+fmt/10.2.1
 
 [generators]
 CMakeDeps
@@ -12,3 +13,4 @@ botan/*:amalgamation=False
 SQLiteCpp/*:shared=False
 botan/*:shared=False
 gtest/*:shared=False
+gmt/*:shared=False
