@@ -1,7 +1,7 @@
 # LOCKSMITH - A C++ Based Password Manager
 _Author: NSoliven_
 
-**Skills Demonstrated:** `C++`, `SQLite`, `SQL`, `Cryptography with ARGON2`, `Botan`, `Object-Oriented Programming`
+**Skills Demonstrated:** `C++`, `SQLite`, `SQL`, `Cryptography with ARGON2`, `Botan`, `Object-Oriented Programming`, `FMT-LIB`
 
 🔐 A minimalistic password manager application built with C++ and SQLite and Botan.
 
