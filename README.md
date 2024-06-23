@@ -57,7 +57,7 @@ _Crossplatform on Linux, Windows, and MacOS_
 ```sh
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
-conan install . --output-folder=build --build=missing --settings=build_type=Debug # change to 'Release' for release mode
+conan install . --output-folder=build --build=missing --settings=build_type=Debug # change to 'Release' for release mode, check CMakeUserPresets.json as well
 cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -S . -B build
 cmake --build build
 
@@ -73,7 +73,7 @@ cd ./out/build/windows_release
 ```bash
 git clone https://github.com/nsoliven/LockSmithCPP
 cd LockSmithCPP
-conan install . --output-folder=build --build=missing --settings=build_type=Release --settings=compiler.cppstd=20 # change to 'Release' for release mode
+conan install . --output-folder=build --build=missing --settings=build_type=Debug --settings=compiler.cppstd=20 # change to 'Release' for release mode, check CMakeUserPresets.json as well
 cmake --build ./out/build/conan_release
 #location may be different depending on how you build
 cd ./out/build/conan_release

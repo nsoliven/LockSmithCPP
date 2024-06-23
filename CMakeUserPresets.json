@@ -6,7 +6,7 @@
         "hidden": false,
         "cacheVariables": {
           "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/build/conan_toolchain.cmake",
-          "CMAKE_BUILD_TYPE": "Debug"
+          "CMAKE_BUILD_TYPE": "Release"
         }
       },
       {
