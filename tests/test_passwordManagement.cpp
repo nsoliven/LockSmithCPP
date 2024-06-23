@@ -15,7 +15,31 @@ TEST(DatabaseTest, AddPassword) {
 
     ASSERT_EQ(storedPassword, password);
     ASSERT_EQ(storedUsername, username);
+
+    remove("test.db");
 }
+
+TEST(DatabaseTest, AddPasswordLargeValue) {
+    Database db("test.db");
+    std::string name = "TestName";
+    std::string username = "TestUsername";
+
+    std::string password;
+    static const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
+    for (int i = 0; i < 100000; ++i) {
+        password += charset[rand() % (sizeof(charset) - 1)];
+    }
+
+    db.addItem(name, username, password);
+    std::string storedPassword;
+    std::string storedUsername;
+    db.getItem(name, storedUsername, storedPassword);
+    ASSERT_EQ(storedPassword, password);
+    ASSERT_EQ(storedUsername, username);
+
+    remove("test.db");
+}
+
 
 TEST(DatabaseTest, RemovePassword) {
     Database db("test.db");
@@ -31,6 +55,8 @@ TEST(DatabaseTest, RemovePassword) {
     bool itemExists = db.getItem(name, storedPassword, storedUsername);
 
     ASSERT_FALSE(itemExists);
+
+    remove("test.db");
 }
 
 TEST(DatabaseTest, ListPasswords) {
@@ -49,9 +75,6 @@ TEST(DatabaseTest, ListPasswords) {
     ASSERT_EQ(itemNames.size(), 2);
     ASSERT_EQ(itemNames[0], name1);
     ASSERT_EQ(itemNames[1], name2);
-}
 
-//delete test database
-TEST(DatabaseTest, TearDown) {
     remove("test.db");
 }
