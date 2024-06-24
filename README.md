@@ -1,12 +1,11 @@
-<div align="right">
+<div align="center">
   <br/> 
-  <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/License-MIT-blue.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec" alt="License: MIT"></a>  
-  <a href="https://github.com/nsoliven/locksmithcpp/releases/latest"><img src="https://img.shields.io/github/v/release/nsoliven/locksmithcpp?style=for-the-badge&color=brightgreen&label=Release&logo=github" alt="Latest Release"></a>
+  <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/License-MIT-blue.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec" alt="License: MIT"></a> <a href="https://github.com/nsoliven/locksmithcpp/releases/latest"><img src="https://img.shields.io/github/v/release/nsoliven/locksmithcpp?style=for-the-badge&color=brightgreen&label=Release&logo=github" alt="Latest Release"></a>
   <br/>  
   <br/>    
 </div>
 
-# LOCKSMITH - A C++ Based Password Manager
+# LOCKSMITH - A C++ Based Password Manager 
 _Author: NSoliven_
 
 **Skills Demonstrated:** `C++`, `SQLite`, `SQL`, `Cryptography with ARGON2`, `Botan`, `Object-Oriented Programming`, `FMT-LIB`, `Google-Test`
