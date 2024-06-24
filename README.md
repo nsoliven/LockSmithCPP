@@ -103,6 +103,10 @@ cd ./out/build/conan_release
 - SQLiteCpp is a smart and easy to use C++ SQLite3 wrapper. Used for db management of passwords.
 - Website: [https://github.com/SRombauts/SQLiteCpp/](https://github.com/SRombauts/SQLiteCpp)
 
+**GOOGLE TEST**
+- Purpose: C++ testing framework for creating unit tests and ensuring code correctness
+- Website: https://github.com/google/googletest
+
 # Files and Components (All subject to change vastly)
 
 | File Name               | Description                                                                                                       |
