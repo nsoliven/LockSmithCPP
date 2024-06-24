@@ -1,3 +1,15 @@
+<div align="right">
+  <br/> 
+  <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/License-MIT-blue.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec" alt="License: MIT"></a>  
+
+  <a href="https://github.com/nsoliven/locksmithcpp/releases/latest"><img src="https://img.shields.io/github/v/release/nsoliven/locksmithcpp?style=for-the-badge&color=brightgreen&label=Release&logo=github" alt="Latest Release"></a>
+  
+  
+  <br/>  
+  <br/>    
+</div>
+
+
 # LOCKSMITH - A C++ Based Password Manager
 _Author: NSoliven_
 
