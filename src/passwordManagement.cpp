@@ -11,6 +11,7 @@ Created in 2023 by NSOLIVEN
 // and retrieving passwords
 
 #include <passwordManagement.h>
+#include <userInterface.h>
 
 // Define the password management functions
 
@@ -509,29 +510,22 @@ bool SystemPasswordManagement::viewPassword(){
     std::string passwordName = "";
     std::string emailUsername = "";
     std::string passwordEncrypted = "";
-
-
+    UserInterface ui;
     try{
         passwordName = getStringFromUser(GET_PASSWORD_NAME);
     }catch(const std::invalid_argument& e){
         std::cout << e.what();
         return false;
     }
-
     //if errored exit function false
     if(!db.getItem(passwordName,emailUsername,passwordEncrypted)){
+        ui.singleLineOutput("Error: Could not retrieve password details for " + passwordName, 'r');
         return false;
     }
 
     Botan::secure_vector<char> passwordDecrypted = enc.decrypt(passwordEncrypted);
-    std::cout << "Password Details:\n"
-        << "--------------------------\n"
-        << "Password Name: " << passwordName << "\n"
-        << "Email/Username: " << emailUsername << "\n"
-        << "Password: ";  
-        printSecureVector(passwordDecrypted);
-        passwordDecrypted.clear(); // clear asap right after printing from memory
-    std::cout << "\n" << "--------------------------\n";
+    ui.printPasswordDetails(passwordName, emailUsername, passwordDecrypted);
+    passwordDecrypted.clear(); // clear asap right after printing from memory
     return true;
 }
 
@@ -546,24 +540,22 @@ bool SystemPasswordManagement::listAllPasswords(){
     if(!db.listItems(pass_names_list)){
         return false;
     }
-    std::cout << "Password Details:\n"
-              << "--------------------------\n";
+    
+    UserInterface ui;
+    ui.singleLineOutput("Listing all passwords...", 'g');
+
     for (unsigned int i = 0; i < pass_names_list.size(); ++i) {
         const std::string &passwordName = pass_names_list[i];
         std::string emailUsername, passwordEncrypted;
-        if (db.getItem(passwordName, emailUsername, passwordEncrypted)) {
-            Botan::secure_vector<char> passwordDecrypted = enc.decrypt(passwordEncrypted);
-            std::cout << "Password Details:\n"
-            << "--------------------------\n"
-            << "Password Name: " << passwordName << "\n"
-            << "Email/Username: " << emailUsername << "\n"
-            << "Password: ";  
-            printSecureVector(passwordDecrypted);
-            passwordDecrypted.clear(); // clear asap right after printing from memory
-            std::cout << "\n" << "--------------------------\n";
-        } else {
-            std::cerr << "Error retrieving details for password: " << passwordName << "\n";
+
+        if (!db.getItem(passwordName, emailUsername, passwordEncrypted)) {
+            ui.singleLineOutput("Error: Could not retrieve password details for " + passwordName, 'r');
+            continue;
         }
+
+        Botan::secure_vector<char> passwordDecrypted = enc.decrypt(passwordEncrypted);
+        ui.printPasswordDetails(passwordName, emailUsername, passwordDecrypted);
+        passwordDecrypted.clear(); // clear asap right after printing from memory
     }
     return true;
 }

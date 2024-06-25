@@ -11,7 +11,7 @@ Created in 2023 by NxSOLIVEN
 #include <string>
 #include <iostream>
 #include <fmt/color.h>
-
+#include <botan/secmem.h> //so ui can print out passwords with secure_vector<char> type
 
 class UserInterface{
 private:
@@ -34,6 +34,7 @@ public:
     void invalidInput();
     void clearScreenOutput();
     void singleLineOutput(const std::string &output, const char &color);
+    void printPasswordDetails(const std::string &pass_name, const std::string &username, Botan::secure_vector<char> &password);
 };
 
 

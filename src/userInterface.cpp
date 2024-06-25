@@ -81,3 +81,15 @@ void UserInterface::singleLineOutput(const std::string &output, const char &colo
     fmt::print("{}{}{}\n", c, output, reset);
     fmt::print("{}{}--------------------------{}\n", bright_blue, bold, reset);
 }
+
+void UserInterface::printPasswordDetails(const std::string &pass_name, const std::string &username, Botan::secure_vector<char> &password){
+    fmt::print("{}{}--------------------------{}\n", bright_blue, bold, reset);
+    fmt::print("Password Name: {}\n", pass_name);
+    fmt::print("Username: {}\n", username);
+    fmt::print("Password: ");
+    for (char c : password) {
+        fmt::print("{}", c);
+    }
+    fmt::print("\n");
+    fmt::print("{}{}--------------------------{}\n", bright_blue, bold, reset);
+}
